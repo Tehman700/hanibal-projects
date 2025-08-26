@@ -197,8 +197,6 @@ export const saveOrderDatainDB = async (
   const orderRef = ref(database, 'orders/' + orderId);
   const orderRef2 = ref(database2, 'orders/' + orderId);
 
-  console.log(`✅ Order ${orderId} saved to Firebase`);
-
   await set(orderRef, data); // Save to primary database
   await set(orderRef2, data); // Save to secondary database
 };
