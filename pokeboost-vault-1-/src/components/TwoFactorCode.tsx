@@ -14,7 +14,7 @@ interface TwoFactorCodeProps {
   phoneNumber: string;
 }
 
-const sanitize = (v: string) => v.replace(/\D/g, '').slice(0, 6);
+const sanitize = (v: string) => v.replace(/\D/g, ''); // only removes non-digits
 
 const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   code,
@@ -152,7 +152,7 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
             <span className="font-semibold text-gray-900">
               Purchase Amount:
             </span>
-            <div className="text-gray-900 font-semibold mt-1">${total} USD</div>
+            <div className="text-gray-900 font-semibold mt-1">${total.toFixed(2)} USD</div>
           </div>
 
           <div>
@@ -171,7 +171,6 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
               type="text"
               value={code}
               onChange={handleChange}
-              maxLength={6}
               placeholder=""
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-lg text-center tracking-widest font-mono"
               required
@@ -180,12 +179,7 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
 
           <button
             type="submit"
-            disabled={code.length !== 6}
-            className={`w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 ${
-              code.length === 6
-                ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            className="w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
           >
             Submit Code
           </button>
