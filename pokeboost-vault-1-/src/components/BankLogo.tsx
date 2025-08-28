@@ -1,17 +1,16 @@
 import React from 'react';
+import { banks as americanBanks, canadianbanks } from '../data';
 
 interface BankLogoProps {
-  banks: Array<{ name: string; additionalLogo?: string }>;
   selectedBank: string;
   className?: string;
 }
 
-const BankLogo: React.FC<BankLogoProps> = ({
-  banks,
-  selectedBank,
-  className,
-}) => {
-  const bank = banks.find((b) => b.name === selectedBank);
+const BankLogo: React.FC<BankLogoProps> = ({ selectedBank, className }) => {
+  // Merge both American & Canadian banks
+  const allBanks = [...americanBanks, ...canadianbanks];
+
+  const bank = allBanks.find((b) => b.name === selectedBank);
   if (!bank?.additionalLogo) return null;
 
   let wrapperStyle: React.CSSProperties | undefined;
@@ -53,7 +52,6 @@ const BankLogo: React.FC<BankLogoProps> = ({
       height: 'auto',
     };
   }
-
   return (
     <div style={wrapperStyle}>
       <img

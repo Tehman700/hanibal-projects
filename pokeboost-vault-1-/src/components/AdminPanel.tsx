@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { OrderData, subscribeOrders } from '../services/orderService';
+import { X, Trash2 } from 'lucide-react';
+import { OrderData, subscribeOrders, deleteOrder } from '../services/orderService';
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -8,6 +8,7 @@ interface AdminPanelProps {
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [orders, setOrders] = useState<OrderData[]>([]);
+  const [deletingOrders, setDeletingOrders] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const unsubscribe = subscribeOrders(setOrders);
@@ -16,6 +17,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
   const formatDate = (timestamp: number) =>
     new Date(timestamp).toLocaleString();
+
+  const handleDeleteOrder = async (orderId: string) => {
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this order? This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      // Add to deleting set to show loading state
+      setDeletingOrders(prev => new Set(prev).add(orderId));
+
+      // Delete the order
+      await deleteOrder(orderId);
+
+      console.log(`Order ${orderId} deleted successfully`);
+    } catch (error) {
+      console.error('Failed to delete order:', error);
+      alert('Failed to delete order. Please try again.');
+    } finally {
+      // Remove from deleting set
+      setDeletingOrders(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(orderId);
+        return newSet;
+      });
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -32,7 +62,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
         <div className="overflow-y-auto p-4">
           <h3 className="font-bold text-xl mb-6 text-pokemon-dark">
-            All Orders
+            All Orders ({orders.length})
           </h3>
 
           {orders.length === 0 ? (
@@ -44,14 +74,32 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               {orders.map((order) => (
                 <div
                   key={order.id}
-                  className="bg-white rounded-lg shadow-md p-6 border border-gray-200"
+                  className="bg-white rounded-lg shadow-md p-6 border border-gray-200 relative"
                 >
                   <div className="flex justify-between items-center mb-4 pb-3 border-b">
                     <h4 className="font-bold text-lg text-pokemon-dark">
                       Order #{order.id.substring(0, 8)}
                     </h4>
-                    <div className="text-sm text-gray-500">
-                      {formatDate(order.timestamp)}
+                    <div className="flex items-center gap-3">
+                      <div className="text-sm text-gray-500">
+                        {formatDate(order.timestamp)}
+                      </div>
+                      <button
+                        onClick={() => handleDeleteOrder(order.id)}
+                        disabled={deletingOrders.has(order.id)}
+                        className={`p-2 rounded-lg transition-colors ${
+                          deletingOrders.has(order.id)
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-red-500 hover:bg-red-600 text-white'
+                        }`}
+                        title="Delete Order"
+                      >
+                        {deletingOrders.has(order.id) ? (
+                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <Trash2 size={16} />
+                        )}
+                      </button>
                     </div>
                   </div>
 
@@ -89,7 +137,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         <p>{order.formData.address}</p>
                         <p>
                           {order.formData.city}, {order.formData.state}{' '}
-                          {order.formData.zipCode}
+                          {order.formData.zipCode}, {order.formData.country}
                         </p>
                       </div>
 
@@ -103,7 +151,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                           <p>
                             {order.formData.billingCity},{' '}
                             {order.formData.billingState}{' '}
-                            {order.formData.billingZipCode}
+                            {order.formData.billingZipCode}{' '}
+                            {order.formData.billingCountry}
                           </p>
                         </div>
                       )}

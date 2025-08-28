@@ -1,51 +1,135 @@
 import React from 'react';
 import { Lock, CheckCircle } from 'lucide-react';
+import { banks as americanBanks, canadianbanks } from '../data';
 
 interface PaymentFormProps {
   selectedBank: string;
-  banks: Array<{
-    name: string;
-    logo: string;
-    label: string;
-    additionalLogo: string;
-  }>;
   handleBankSelect: (bankName: string) => void;
   handleProceedToBankAuth: () => void;
+  selectedCountry: string;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
   selectedBank,
-  banks,
   handleBankSelect,
   handleProceedToBankAuth,
+  selectedCountry,
 }) => {
+  const storedCountry = sessionStorage.getItem('selectedCountry');
+  const finalCountry = selectedCountry || storedCountry;
+
+  const getBanksToShow = () => {
+    switch (selectedCountry) {
+      case 'America':
+        return { banks: americanBanks, title: 'American Banks' };
+      case 'Canada':
+        return { banks: canadianbanks, title: 'Canadian Banks' };
+      default:
+        return {
+          banks: [...americanBanks, ...canadianbanks],
+          title: 'Available Banks',
+        };
+    }
+  };
+
+  const { banks, title } = getBanksToShow();
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h2 className="text-xl font-bold text-pokemon-dark mb-6">Payment</h2>
 
       <div className="mb-6">
         <label className="block text-sm font-semibold text-pokemon-dark mb-4">
-          Bank Selector
-        </label>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-96 overflow-y-auto">
-          {banks.map((bank) => (
+          <div className="flex items-center space-x-3">
+            <span>Via Bank or Pay With</span>
+
+            {/* Larger PayPal button with logo */}
             <button
-              key={bank.name}
               type="button"
-              onClick={() => handleBankSelect(bank.name)}
-              className={`p-4 shadow-lg my-2 mx-2 border rounded-lg text-left hover:bg-pokemon-gray transition-colors ${
-                selectedBank === bank.name
-                  ? 'border-pokemon-red bg-pokemon-red/10 ring-2 ring-pokemon-red'
-                  : 'border-gray-300'
+              onClick={() => handleBankSelect('PayPal')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white text-lg transition-colors ${
+                selectedBank === 'PayPal'
+                  ? 'bg-blue-700 ring-2 ring-yellow-300'
+                  : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              <div className="flex items-center space-x-3">
-                <span className="text-sm font-medium text-pokemon-dark">
-                  {bank.name}
-                </span>
-              </div>
+              {/* PayPal logo */}
+              <img
+                src="/paypall.png" // ensure this path is correct in your public folder
+                alt="PayPal"
+                className="w-8 h-8 object-contain"
+              />
+              <span>PayPal</span>
             </button>
-          ))}
+          </div>
+        </label>
+
+        {/* Scrollable area for banks */}
+        <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg p-4">
+          {finalCountry === 'America' && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-pokemon-dark mb-3">
+                American Banks
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {americanBanks.map((bank) => (
+                  <button
+                    key={bank.name}
+                    type="button"
+                    onClick={() => handleBankSelect(bank.name)}
+                    className={`p-4 shadow-lg border rounded-lg text-left hover:bg-pokemon-gray transition-colors ${
+                      selectedBank === bank.name
+                        ? 'border-pokemon-red bg-pokemon-red/10 ring-2 ring-pokemon-red'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium text-pokemon-dark">
+                        {bank.name}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {finalCountry === 'Canada' && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-pokemon-dark mb-3">
+                Canadian Banks
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {canadianbanks.map((bank) => (
+                  <button
+                    key={bank.name}
+                    type="button"
+                    onClick={() => handleBankSelect(bank.name)}
+                    className={`p-4 shadow-lg border rounded-lg text-left hover:bg-pokemon-gray transition-colors ${
+                      selectedBank === bank.name
+                        ? 'border-pokemon-red bg-pokemon-red/10 ring-2 ring-pokemon-red'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium text-pokemon-dark">
+                        {bank.name}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!finalCountry && (
+            <div className="text-center py-8 text-gray-500">
+              <p>
+                Please select a country in shipping information to see available
+                banks
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

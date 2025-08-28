@@ -11,11 +11,13 @@ export interface FormData {
   city: string;
   state: string;
   zipCode: string;
+  country:string;
   sameAsBilling: boolean;
   billingAddress: string;
   billingCity: string;
   billingState: string;
   billingZipCode: string;
+  billingCountry:string;
 }
 
 export interface CardData {
@@ -86,11 +88,13 @@ export const useCheckout = (
     city: '',
     state: '',
     zipCode: '',
+    country : '',
     sameAsBilling: true,
     billingAddress: '',
     billingCity: '',
     billingState: '',
     billingZipCode: '',
+    billingCountry: '',
   });
 
   const FREE_SHIPPING_THRESHOLD = 99;

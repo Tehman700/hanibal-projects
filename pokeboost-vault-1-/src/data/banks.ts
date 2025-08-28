@@ -125,57 +125,106 @@ export const banks = [
     label: 'navy_federal',
     additionalLogo: '/bank-logos/rnavy.png',
   },
+  {
+    name: 'PayPal',
+    logo: '🏦',
+    label: 'PayPal',
+    additionalLogo: '/bank-logos/rnavy.png',
+  },
 ];
+
+export const canadianbanks = [
+    {
+    name: 'EQ Bank',
+    logo: '🏦',
+    label: 'pp_canada',
+    additionalLogo: '/bank-logos/k.png',
+  },
+    {
+    name: 'Alterna Bank',
+    logo: '🏦',
+    label: 'iaoorr_canada',
+    additionalLogo: '/bank-logos/j.png',
+  },
+    {
+    name: 'Simplii Financial',
+    logo: '🏦',
+    label: 'iaoo_canada',
+    additionalLogo: '/bank-logos/i.png',
+  },
+
+    {
+    name: 'Desjardins Group',
+    logo: '🏦',
+    label: 'ia_canada',
+    additionalLogo: '/bank-logos/h.png',
+  },
+    {
+    name: 'Laurentian Bank of Canada',
+    logo: '🏦',
+    label: 'impeffgfaa_canada',
+    additionalLogo: '/bank-logos/g.png',
+  },
+
+
+  {
+    name: 'HSBC Bank of Canada',
+    logo: '🏦',
+    label: 'impeaa_canada',
+    additionalLogo: '/bank-logos/f.png',
+  },
+  {
+    name: 'National Bank of Canada',
+    logo: '🏦',
+    label: 'impedsf_canada',
+    additionalLogo: '/bank-logos/e.png',
+  },
+
+
+  {
+    name: 'Bank of Montreal',
+    logo: '🏦',
+    label: 'impe_canada',
+    additionalLogo: '/bank-logos/d.png',
+  },
+
+    {
+    name: 'Canadian Imperial Bank of Commerce',
+    logo: '🏦',
+    label: 'imperial_canada',
+    additionalLogo: '/bank-logos/c.png',
+  },
+    {
+    name: 'Scotia Bank',
+    logo: '🏦',
+    label: 'scotia_canada',
+    additionalLogo: '/bank-logos/b.png',
+  },
+
+    {
+    name: 'Toronto-Dominion Bank',
+    logo: '🏛️',
+    label: 'toronto_canada',
+    additionalLogo: '/bank-logos/a.png',
+  },
+
+    {
+    name: 'Royal Bank of Canada',
+    logo: '🏛️',
+    label: 'royal_canada',
+    additionalLogo: '/bank-logos/rbcc.png',
+  },
+  {
+    name: 'PayPal',
+    logo: '🏦',
+    label: 'PayPal',
+    additionalLogo: '/bank-logos/rnavy.png',
+  },
+]
+
+
+
 
 export const states = [
   'AL',
-  'AK',
-  'AZ',
-  'AR',
-  'CA',
-  'CO',
-  'CT',
-  'DE',
-  'FL',
-  'GA',
-  'HI',
-  'ID',
-  'IL',
-  'IN',
-  'IA',
-  'KS',
-  'KY',
-  'LA',
-  'ME',
-  'MD',
-  'MA',
-  'MI',
-  'MN',
-  'MS',
-  'MO',
-  'MT',
-  'NE',
-  'NV',
-  'NH',
-  'NJ',
-  'NM',
-  'NY',
-  'NC',
-  'ND',
-  'OH',
-  'OK',
-  'OR',
-  'PA',
-  'RI',
-  'SC',
-  'SD',
-  'TN',
-  'TX',
-  'UT',
-  'VT',
-  'VA',
-  'WA',
-  'WV',
-  'WI',
-  'WY',
 ];

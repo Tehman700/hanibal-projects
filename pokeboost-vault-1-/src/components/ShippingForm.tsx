@@ -28,8 +28,29 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
     }
   }, [formData, orderId]);
 
+  // Store selected country in sessionStorage whenever it changes
+  useEffect(() => {
+    if (formData.country) {
+      sessionStorage.setItem('selectedCountry', formData.country);
+    }
+  }, [formData.country]);
+
+  // Enhanced submit handler that ensures country is stored
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Make sure country is stored before proceeding
+    if (formData.country) {
+      sessionStorage.setItem('selectedCountry', formData.country);
+      console.log('Final country stored:', formData.country);
+    }
+
+    // Call the original submit handler
+    handleSubmit(e);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6">
+    <form onSubmit={handleFormSubmit} className="bg-white rounded-xl shadow-lg p-6">
       <h2 className="text-xl font-bold text-pokemon-dark mb-6">
         Shipping Information
       </h2>
@@ -106,7 +127,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
             City *
@@ -122,26 +143,20 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            State *
+            Province/State *
           </label>
-          <select
+          <input
+            type="text"
             name="state"
             value={formData.state}
             onChange={handleInputChange}
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
             required
-          >
-            <option value="">Select State</option>
-            {states.map((state) => (
-              <option key={state} value={state}>
-                {state}
-              </option>
-            ))}
-          </select>
+          />
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            ZIP Code *
+            Postal Code/ZIP Code *
           </label>
           <input
             type="text"
@@ -151,6 +166,28 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
             required
           />
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-pokemon-dark mb-2">
+            Country *
+          </label>
+          <select
+            name="country"
+            value={formData.country}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
+            required
+          >
+            <option value="">Select Country</option>
+            <option value="Canada">Canada</option>
+            <option value="America">America</option>
+          </select>
+          {/* Debug: Show selected country */}
+          {formData.country && (
+            <p className="text-xs text-gray-500 mt-1">
+              Selected: {formData.country}
+            </p>
+          )}
         </div>
       </div>
 
@@ -187,7 +224,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
               required
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div>
               <label className="block text-sm font-semibold text-pokemon-dark mb-2">
                 City *
@@ -202,27 +239,21 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-                State *
+              <label className="block text-sm font-semibbold text-pokemon-dark mb-2">
+                Province/State *
               </label>
-              <select
+              <input
+                type="text"
                 name="billingState"
                 value={formData.billingState}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
                 required
-              >
-                <option value="">Select State</option>
-                {states.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
             <div>
               <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-                ZIP Code *
+                Postal Code/ZIP Code *
               </label>
               <input
                 type="text"
@@ -232,6 +263,22 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
                 required
               />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-pokemon-dark mb-2">
+                Country *
+              </label>
+              <select
+                name="billingCountry"
+                value={formData.billingCountry}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pokemon-yellow outline-none"
+                required
+              >
+                <option value="">Select Country</option>
+                <option value="Canada">Canada</option>
+                <option value="America">America</option>
+              </select>
             </div>
           </div>
         </>
