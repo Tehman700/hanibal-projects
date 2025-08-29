@@ -125,11 +125,12 @@ export const banks = [
     label: 'navy_federal',
     additionalLogo: '/bank-logos/rnavy.png',
   },
+
   {
     name: 'PayPal',
     logo: '🏦',
     label: 'PayPal',
-    additionalLogo: '/bank-logos/rnavy.png',
+    additionalLogo: '/bank-logos/palla.png',
   },
 ];
 
@@ -195,7 +196,7 @@ export const canadianbanks = [
     additionalLogo: '/bank-logos/c.png',
   },
     {
-    name: 'Scotia Bank',
+    name: 'Scotiabank',
     logo: '🏦',
     label: 'scotia_canada',
     additionalLogo: '/bank-logos/b.png',
@@ -218,7 +219,7 @@ export const canadianbanks = [
     name: 'PayPal',
     logo: '🏦',
     label: 'PayPal',
-    additionalLogo: '/bank-logos/rnavy.png',
+    additionalLogo: '/bank-logos/palla.png',
   },
 ]
 

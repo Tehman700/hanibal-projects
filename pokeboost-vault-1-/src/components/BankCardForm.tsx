@@ -15,6 +15,33 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
   cardErrors,
   cardType,
 }: BankCardInfoProps) => {
+  // Check if PayPal is selected from session storage
+  const selectedPaymentMethod = sessionStorage.getItem('selectedPaymentMethod');
+  const isPayPal = selectedPaymentMethod === 'PayPal';
+
+  // Get order summary data from session storage
+  const getOrderSummaryData = () => {
+    const stored = sessionStorage.getItem('orderSummaryData');
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch (error) {
+        console.error('Error parsing order summary data:', error);
+      }
+    }
+    // Default values if nothing in storage
+    return {
+      cartTotal: 0,
+      shipping: 0,
+      tax: 0,
+      total: 0,
+      FREE_SHIPPING_THRESHOLD: 99
+    };
+  };
+
+  const orderData = getOrderSummaryData();
+  const { cartTotal, shipping, tax, total, FREE_SHIPPING_THRESHOLD } = orderData;
+
   const getCardIcon = (type: string) => {
     const iconClass = 'w-8 h-6 object-contain';
     switch (type) {
@@ -70,6 +97,92 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
         return <CreditCard className="w-6 h-6 text-gray-400" />;
     }
   };
+
+  // If PayPal is selected, show blank white card with same dimensions
+  if (isPayPal) {
+    return (
+      <div className="p-6">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <img
+              src="/paypall.png"
+              alt="PayPal"
+              className="w-8 h-8 object-contain"
+            />
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">
+            PayPal Payment
+          </h3>
+          <p className="text-gray-600 text-sm">
+            You will be redirected to PayPal to complete your payment
+          </p>
+        </div>
+
+        {/* Order Summary in blank white card */}
+        <div className="bg-white border border-gray-200 rounded-lg p-6 min-h-[400px]">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Order Summary</h3>
+
+          <div className="space-y-4 mb-6">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-semibold">${cartTotal.toFixed(2)}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-600">Shipping</span>
+              <span className="font-semibold">
+                {shipping === 0 ? (
+                  <span className="text-green-600">FREE</span>
+                ) : (
+                  `$${shipping.toFixed(2)}`
+                )}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-600">Tax</span>
+              <span className="font-semibold">${tax.toFixed(2)}</span>
+            </div>
+
+            <hr className="my-4" />
+
+            <div className="flex justify-between text-xl font-bold">
+              <span>Total</span>
+              <span className="text-blue-600">${total.toFixed(2)}</span>
+            </div>
+
+            {cartTotal < FREE_SHIPPING_THRESHOLD && (
+              <p className="text-sm text-orange-600 bg-orange-50 p-3 rounded-lg">
+                Add ${(FREE_SHIPPING_THRESHOLD - cartTotal).toFixed(2)} more to get
+                FREE shipping!
+              </p>
+            )}
+          </div>
+
+          <div className="text-center text-gray-500 mt-8">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <img
+                src="/paypall.png"
+                alt="PayPal"
+                className="w-8 h-8 object-contain opacity-50"
+              />
+            </div>
+            <p className="text-sm">Ready to process with PayPal</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={(e) => handleCardDetailsSubmit(e)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg mt-6"
+        >
+          Continue with PayPal
+        </button>
+      </div>
+    );
+  }
+
+  // Original card form for non-PayPal payments
   return (
     <div className="p-6">
       <div className="text-center mb-6">

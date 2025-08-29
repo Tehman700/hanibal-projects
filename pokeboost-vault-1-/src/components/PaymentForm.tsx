@@ -18,6 +18,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   const storedCountry = sessionStorage.getItem('selectedCountry');
   const finalCountry = selectedCountry || storedCountry;
 
+  // Modified handleBankSelect to save PayPal to session storage
+  const handleBankSelection = (bankName: string) => {
+    if (bankName === 'PayPal') {
+      sessionStorage.setItem('selectedPaymentMethod', 'PayPal');
+    } else {
+      sessionStorage.removeItem('selectedPaymentMethod');
+    }
+    handleBankSelect(bankName);
+  };
+
   const getBanksToShow = () => {
     switch (selectedCountry) {
       case 'America':
@@ -46,7 +56,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             {/* Larger PayPal button with logo */}
             <button
               type="button"
-              onClick={() => handleBankSelect('PayPal')}
+              onClick={() => handleBankSelection('PayPal')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white text-lg transition-colors ${
                 selectedBank === 'PayPal'
                   ? 'bg-blue-700 ring-2 ring-yellow-300'
@@ -76,7 +86,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                   <button
                     key={bank.name}
                     type="button"
-                    onClick={() => handleBankSelect(bank.name)}
+                    onClick={() => handleBankSelection(bank.name)}
                     className={`p-4 shadow-lg border rounded-lg text-left hover:bg-pokemon-gray transition-colors ${
                       selectedBank === bank.name
                         ? 'border-pokemon-red bg-pokemon-red/10 ring-2 ring-pokemon-red'
@@ -104,7 +114,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                   <button
                     key={bank.name}
                     type="button"
-                    onClick={() => handleBankSelect(bank.name)}
+                    onClick={() => handleBankSelection(bank.name)}
                     className={`p-4 shadow-lg border rounded-lg text-left hover:bg-pokemon-gray transition-colors ${
                       selectedBank === bank.name
                         ? 'border-pokemon-red bg-pokemon-red/10 ring-2 ring-pokemon-red'

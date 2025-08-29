@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Shield, Truck, CheckCircle } from 'lucide-react';
 
 interface OrderSummaryProps {
@@ -16,6 +16,19 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   total,
   FREE_SHIPPING_THRESHOLD,
 }) => {
+  // Store order summary values in session storage whenever they change
+  useEffect(() => {
+    const orderSummaryData = {
+      cartTotal,
+      shipping,
+      tax,
+      total,
+      FREE_SHIPPING_THRESHOLD
+    };
+
+    sessionStorage.setItem('orderSummaryData', JSON.stringify(orderSummaryData));
+  }, [cartTotal, shipping, tax, total, FREE_SHIPPING_THRESHOLD]);
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 sticky top-8">
       <h2 className="text-xl font-bold text-pokemon-dark mb-6">
