@@ -698,7 +698,7 @@ return (
       <div className="w-full bg-gray-50 rounded-t-lg flex justify-center items-center py-8">
         <div className="text-4xl font-bold text-blue-600 flex items-center">
             <img
-              src="/public/palla.png"
+              src="palla.png"
               alt="Pal"
               className="inline-block h-12 align-middle"
             />
