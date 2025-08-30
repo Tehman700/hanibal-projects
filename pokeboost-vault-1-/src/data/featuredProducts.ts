@@ -9,6 +9,5 @@ export interface FeaturedProduct {
   isNew?: boolean;
   category?: string;
 }
-
 export const featuredProducts: FeaturedProduct[] = [
 ];
