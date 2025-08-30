@@ -13,7 +13,6 @@ import {
 interface ProductProps {
   addToCart: (product: Omit<CartItem, 'quantity'>) => void;
 }
-
 interface ProductType {
   id: number;
   name: string;
