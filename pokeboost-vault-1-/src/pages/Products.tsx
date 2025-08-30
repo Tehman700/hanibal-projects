@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { CartItem } from '../App';
-const API_URL = import.meta.env.VITE_API_URL;
 import { useProducts } from '../hooks/useProducts';
 import {
   ProductsHeader,
@@ -49,8 +48,10 @@ const Products: React.FC<ProductsProps> = ({ addToCart }) => {
     handleViewModeChange,
   } = useProducts(products);
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 useEffect(() => {
-  fetch('${API_URL}/api/products') // <-- Update to your EC2 public IP
+  fetch(`${API_URL}/api/products`)  // ✅ Correct string interpolation
     .then((res) => res.json())
     .then((data: ProductAPIItem[]) => {
       const productsWithDiscount: ProductWithDiscount[] = data.map((p) => {
@@ -77,8 +78,9 @@ useEffect(() => {
 
       setProducts(productsWithDiscount);
     })
-    .catch((err) => console.error('Failed to fetch products:', err));
+    .catch((err) => console.error("Failed to fetch products:", err));
 }, []);
+
 
 
   return (
