@@ -13,23 +13,30 @@ const ProductBadges: React.FC<ProductBadgesProps> = ({
   originalPrice,
   price,
 }) => {
-  const showSaveBadge = originalPrice && price && originalPrice - price >= 20;
+  // Show save badge if originalPrice > price
+  const showSaveBadge =
+    originalPrice !== undefined &&
+    price !== undefined &&
+    originalPrice > price;
+
+  // Calculate saved amount
+  const savedAmount = showSaveBadge ? originalPrice! - price! : 0;
 
   return (
     <div className="absolute top-2 left-2 flex flex-col space-y-1">
-      {false && (
+      {isHot && (
         <span className="bg-pokemon-red text-white text-xs font-bold px-2 py-1 rounded">
           HOT
         </span>
       )}
-      {false && (
+      {isNew && (
         <span className="bg-pokemon-blue text-white text-xs font-bold px-2 py-1 rounded">
           NEW
         </span>
       )}
       {showSaveBadge && (
         <span className="bg-pokemon-red text-white text-xs font-bold px-2 py-1 rounded">
-          Save ${20} USD
+            Save ${Math.round(savedAmount)} USD
         </span>
       )}
     </div>
