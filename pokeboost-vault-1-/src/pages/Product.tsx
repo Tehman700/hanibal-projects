@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 import { CartItem } from '../App';
 import {
   ProductImages,
@@ -32,7 +33,7 @@ const Product: React.FC<ProductProps> = ({ addToCart }) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetch(`http://3.94.168.68/api/products/${id}`)
+    fetch(`${API_URL}/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
       .catch((err) => console.error('Failed to fetch product:', err));

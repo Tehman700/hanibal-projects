@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CartItem } from '../App';
+const API_URL = import.meta.env.VITE_API_URL;
 import { useProducts } from '../hooks/useProducts';
 import {
   ProductsHeader,
@@ -49,7 +50,7 @@ const Products: React.FC<ProductsProps> = ({ addToCart }) => {
   } = useProducts(products);
 
 useEffect(() => {
-  fetch('http://3.94.168.68/api/products') // <-- Update to your EC2 public IP
+  fetch('${API_URL}/api/products') // <-- Update to your EC2 public IP
     .then((res) => res.json())
     .then((data: ProductAPIItem[]) => {
       const productsWithDiscount: ProductWithDiscount[] = data.map((p) => {
