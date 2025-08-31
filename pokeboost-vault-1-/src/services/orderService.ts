@@ -17,7 +17,6 @@ export interface OrderData {
     price: number;
     quantity: number;
     image: string;
-    set: string;
   }[];
   total?: number;
 }
