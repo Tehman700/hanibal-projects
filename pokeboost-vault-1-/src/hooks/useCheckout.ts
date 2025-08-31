@@ -221,7 +221,7 @@ export const useCheckout = (
           return;
         }
       } else if (name === 'cardholderName') {
-        formattedValue = value.replace(/[^a-zA-Z\s]/g, '').toUpperCase();
+            formattedValue = value.replace(/[^a-zA-Z\s]/g, '');
       }
 
       const updatedCardData = { ...cardData, [name]: formattedValue };

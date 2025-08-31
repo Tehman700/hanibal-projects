@@ -19,6 +19,7 @@ interface ProductType {
   price: string;
   original_price: string;
   image: string;
+  category: string;
   description: string;
   stock?: number;
   set?: string;
@@ -91,7 +92,10 @@ const handleAddToCart = () => {
                 originalPrice={parseFloat(product.original_price)}
                 set={product.set ?? ''}
               />
-
+              {/* ✅ Show category */}
+                <p className="text-base text-black mb-2">
+                  Category: <span className="font-medium text-blue-700">{product.category}</span>
+                </p>
               {/* ✅ Product description */}
               <p className="text-gray-700 mb-4">{product.description}</p>
 

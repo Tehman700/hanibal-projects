@@ -6,7 +6,7 @@ const slides = [
   {
     title: 'Catch Every Card — From Booster Packs to Ultra Premiums',
     subtitle:
-      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
+      'Limited-Time sale on all products!\nFree shipping on all orders over $99!',
     description: 'Shop the latest releases and rare finds, all in one place.',
     image:
       'https://images.pexels.com/photos/163036/mario-luigi-figures-funny-163036.jpeg',
@@ -15,7 +15,7 @@ const slides = [
   {
     title: 'Build Your Collection, Power Up Your Game',
     subtitle:
-      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
+      'Limited-Time sale on all products!\nFree shipping on all orders over $99!',
     description:
       'Elite Trainer Boxes, Booster Boxes, and more — shipped fast, packed with care.',
     image: 'https://images.pexels.com/photos/275033/pexels-photo-275033.jpeg',
@@ -24,7 +24,7 @@ const slides = [
   {
     title: 'Your Trusted Pokémon TCG Destination',
     subtitle:
-      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
+      'Limited-Time sale on all products!\nFree shipping on all orders over $99!',
     description:
       'Authentic cards, competitive prices, and an ever-growing selection.',
     image: 'https://images.pexels.com/photos/1367225/pexels-photo-1367225.jpeg',

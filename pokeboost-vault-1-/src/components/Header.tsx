@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount }) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/logo.svg" className="w-[167px] h-36" />
+            <img src="/logo.png" className="w-[167px] h-36" />
           </Link>
 
           {/* Desktop Navigation */}

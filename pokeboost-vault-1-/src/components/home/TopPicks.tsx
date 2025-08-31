@@ -55,29 +55,27 @@ const TopPicks: React.FC<TopPicksProps> = ({ addToCart }) => {
         console.log('API Response:', data);
 
         // Filter products where is_hot is true and transform them
-        const hotProductsFiltered: FeaturedProduct[] = data
-          .filter((product) => {
-            console.log(`Product ${product.name} - is_hot: ${product.is_hot}`);
-            return product.is_hot === true;
-          })
-          .map((apiProduct) => {
-            const price = parseFloat(apiProduct.price) || 0;
-            const originalPrice = parseFloat(apiProduct.original_price) || 0;
+const hotProductsFiltered: FeaturedProduct[] = data
+  .filter((product) => product.is_hot === true)
+  .map((apiProduct) => {
+    const price = parseFloat(apiProduct.price) || 0;
+    const originalPrice = parseFloat(apiProduct.original_price) || 0;
 
-            return {
-              id: apiProduct.id.toString(),
-              name: apiProduct.name,
-              price: price,
-              originalPrice: originalPrice > price ? originalPrice : undefined,
-              image: apiProduct.image,
-              set: apiProduct.category || 'Unknown Set',
-              isHot: apiProduct.is_hot,
-              isNew: apiProduct.is_new,
-              category: apiProduct.category,
-            };
-          });
+    return {
+      id: apiProduct.id.toString(),
+      name: apiProduct.name,
+      price: price,
+      originalPrice: originalPrice > price ? originalPrice : undefined,
+      image: apiProduct.image,
+      set: apiProduct.category || 'Unknown Set',
+      isHot: apiProduct.is_hot,
+      isNew: apiProduct.is_new,
+      category: apiProduct.category,
+    };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name)); // <-- added sorting
 
-        console.log('Hot products found:', hotProductsFiltered);
+
         setHotProducts(hotProductsFiltered);
       } catch (err) {
         console.error('Failed to fetch hot products:', err);
