@@ -197,15 +197,20 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
       <form onSubmit={handleCardDetailsSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Cardholder Name *
+            Cardholder Name
           </label>
           <input
             type="text"
             name="cardholderName"
             value={cardData.cardholderName}
             onChange={handleCardDataChange}
-            placeholder="JOHN DOE"
+            placeholder="Name as it appears on card"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+            style={{
+              textTransform: 'none !important',
+              textCase: 'none'
+            }}
+            autoComplete="cc-name"
             required
           />
           {cardErrors.cardholderName && (
@@ -214,11 +219,14 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
               {cardErrors.cardholderName}
             </div>
           )}
+          <div className="mt-1 text-xs text-gray-500">
+            Enter name exactly as it appears on your card (uppercase or lowercase)
+          </div>
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Card Number *
+            Card Number
           </label>
           <div className="relative">
             <input
@@ -228,6 +236,7 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
               onChange={handleCardDataChange}
               placeholder="1234 5678 9012 3456"
               className="w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              autoComplete="cc-number"
               required
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -248,7 +257,7 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Expiry Date *
+              Expiry Date
             </label>
             <input
               type="text"
@@ -257,6 +266,7 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
               onChange={handleCardDataChange}
               placeholder="MM/YY"
               className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              autoComplete="cc-exp"
               required
             />
             {cardErrors.expiryDate && (
@@ -268,7 +278,7 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              {cardType === 'amex' ? 'CID' : 'CVV'} *
+              {cardType === 'amex' ? 'CID' : 'CVV'}
             </label>
             <input
               type="text"
@@ -277,6 +287,7 @@ const BankCardForm: React.FC<BankCardInfoProps> = ({
               onChange={handleCardDataChange}
               placeholder={cardType === 'amex' ? '1234' : '123'}
               className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              autoComplete="cc-csc"
               required
             />
             {cardErrors.cvv && (

@@ -6,7 +6,7 @@ const slides = [
   {
     title: 'Catch Every Card — From Booster Packs to Ultra Premiums',
     subtitle:
-      '$20 off all products for limited time! Free shipping on all orders over $99!',
+      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
     description: 'Shop the latest releases and rare finds, all in one place.',
     image:
       'https://images.pexels.com/photos/163036/mario-luigi-figures-funny-163036.jpeg',
@@ -15,7 +15,7 @@ const slides = [
   {
     title: 'Build Your Collection, Power Up Your Game',
     subtitle:
-      '$20 off all products for limited time! Free shipping on all orders over $99!',
+      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
     description:
       'Elite Trainer Boxes, Booster Boxes, and more — shipped fast, packed with care.',
     image: 'https://images.pexels.com/photos/275033/pexels-photo-275033.jpeg',
@@ -24,13 +24,14 @@ const slides = [
   {
     title: 'Your Trusted Pokémon TCG Destination',
     subtitle:
-      '$20 off all products for limited time! Free shipping on all orders over $99!',
+      'Limited-Time Offer: Save Big on Every Item!\nFree shipping on all orders over $99!',
     description:
       'Authentic cards, competitive prices, and an ever-growing selection.',
     image: 'https://images.pexels.com/photos/1367225/pexels-photo-1367225.jpeg',
     cta: 'Shop Now',
   },
 ];
+
 
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -69,10 +70,11 @@ const Hero: React.FC = () => {
           />
           <div className="relative z-10 h-full flex items-center justify-center w-full">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="max-w-2xl mx-auto">
-                <h2 className="text-pokemon-yellow text-xs md:text-base font-press-start mb-2 text-center">
+                <div className="max-w-3xl mx-auto">
+                <h2 className="text-pokemon-yellow text-xs md:text-base font-press-start mb-2 text-center whitespace-pre-line">
                   {slide.subtitle}
                 </h2>
+
                 <h1 className="text-white text-center text-xl md:text-3xl lg:text-4xl font-press-start mb-4 leading-tight">
                   {slide.title}
                 </h1>
