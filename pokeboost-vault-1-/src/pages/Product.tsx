@@ -87,7 +87,7 @@ const handleAddToCart = () => {
 
             <div>
                             <p className="text-base text-black mb-2">
-                  Category: <span className="font-medium text-blue-700">{product.category}</span>
+                  <span className="font-medium text-blue-700">{product.category}</span>
                 </p>
               <ProductHeader
                 name={product.name}
