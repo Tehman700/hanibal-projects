@@ -86,6 +86,9 @@ const handleAddToCart = () => {
             <ProductImages image={product.image} name={product.name} />
 
             <div>
+                            <p className="text-base text-black mb-2">
+                  Category: <span className="font-medium text-blue-700">{product.category}</span>
+                </p>
               <ProductHeader
                 name={product.name}
                 price={parseFloat(product.price)}
@@ -93,9 +96,7 @@ const handleAddToCart = () => {
                 set={product.set ?? ''}
               />
               {/* ✅ Show category */}
-                <p className="text-base text-black mb-2">
-                  Category: <span className="font-medium text-blue-700">{product.category}</span>
-                </p>
+
               {/* ✅ Product description */}
               <p className="text-gray-700 mb-4">{product.description}</p>
 
