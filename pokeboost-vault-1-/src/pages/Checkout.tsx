@@ -83,9 +83,15 @@ const Checkout: React.FC<CheckoutProps> = ({
             {step === 2 && (
               <PaymentForm
                 selectedBank={selectedBank}
-                banks={banks}
                 handleBankSelect={handleBankSelect}
                 handleProceedToBankAuth={handleProceedToBankAuth}
+                selectedCountry={formData.country}
+                // Add card-related props
+                cardData={cardData}
+                cardErrors={cardErrors}
+                cardType={cardType}
+                handleCardDataChange={handleCardDataChange}
+                handleCardDetailsSubmit={handleCardDetailsSubmit}
               />
             )}
           </div>

