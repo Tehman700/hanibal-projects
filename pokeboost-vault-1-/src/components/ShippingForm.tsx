@@ -288,7 +288,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({
         type="submit"
         className="w-full bg-pokemon-red hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg flex items-center justify-center space-x-2"
       >
-        <span>Continue to Payment →</span>
+        <span>Proceed to Payment</span>
       </button>
     </form>
   );
