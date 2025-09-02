@@ -109,7 +109,7 @@ return (
       <div className="mb-6">
         <label className="block text-sm font-semibold text-pokemon-dark mb-4">
           <div className="flex items-center space-x-3">
-            <span>Via Bank or Pay With</span>
+            <span>Pay with Credit/Debit Card or</span>
 
             {/* PayPal button */}
             <button
