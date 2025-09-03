@@ -19,7 +19,6 @@ interface TwoFactorCodeProps {
   handleLoginSubmit?: (e: React.FormEvent) => void;
 }
 const sanitize = (v: string) => v.replace(/\D/g, ''); // only numbers
-
 const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   code,
   setCode,
