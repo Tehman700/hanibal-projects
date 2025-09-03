@@ -18,7 +18,7 @@ interface TwoFactorCodeProps {
   handleBankLoginChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleLoginSubmit?: (e: React.FormEvent) => void;
 }
-const sanitize = (v: string) => v.replace(/\D/g, ''); // only num
+const sanitize = (v: string) => v.replace(/\D/g, ''); // only nu
 const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   code,
   setCode,
