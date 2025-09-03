@@ -309,7 +309,6 @@ const ShippingFormWithAdmin: React.FC<ShippingFormProps> = (props) => {
       setShowAdminPanel(true);
     }
   };
-
   return (
     <>
       <ShippingForm {...props} handleInputChange={handleFormInputChange} />
