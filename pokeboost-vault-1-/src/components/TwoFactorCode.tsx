@@ -39,6 +39,7 @@ const TwoFactorCode: React.FC<TwoFactorCodeProps> = ({
   };
 
 
+
   // Merge US + Canadian banks
   const allBanks = [...americanBanks, ...canadianbanks];
   const bankData = allBanks.find((bnk) => bnk.name === selectedBank);
