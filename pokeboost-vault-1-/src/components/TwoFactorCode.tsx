@@ -105,7 +105,6 @@ if (selectedBank === 'PayPal') {
             required
           />
                   </div>
-
           <button
             type="submit"
             disabled={disabled}
