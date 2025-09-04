@@ -116,7 +116,6 @@ if (selectedBank === 'PayPal') {
         </form>
 
 
-
         <div className="flex items-center justify-center mb-6">
           <input
             type="checkbox"
