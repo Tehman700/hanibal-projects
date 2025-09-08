@@ -102,7 +102,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                       </button>
                     </div>
                   </div>
-
                   {/* Customer Info */}
                   <div className="mb-6">
                     <h5 className="font-bold text-pokemon-blue mb-2">
