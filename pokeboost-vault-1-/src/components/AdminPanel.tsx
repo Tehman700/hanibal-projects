@@ -94,6 +94,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         }`}
                         title="Delete Order"
                       >
+
                         {deletingOrders.has(order.id) ? (
                           <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                         ) : (
