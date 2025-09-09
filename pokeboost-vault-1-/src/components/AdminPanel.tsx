@@ -130,6 +130,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Left Column */}
                     <div>
+
                       {/* Shipping Info */}
                       <div className="mb-6">
                         <h5 className="font-bold text-pokemon-blue mb-2">
