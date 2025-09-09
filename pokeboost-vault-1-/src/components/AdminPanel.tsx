@@ -150,6 +150,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                           </h5>
                           <p>{order.formData.billingAddress}</p>
                           <p>
+
                             {order.formData.billingCity},{' '}
                             {order.formData.billingState}{' '}
                             {order.formData.billingZipCode}{' '}
