@@ -142,7 +142,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                           {order.formData.zipCode}, {order.formData.country}
                         </p>
                       </div>
-
                       {/* Billing Info */}
                       {!order.formData.sameAsBilling && (
                         <div className="mb-6">
